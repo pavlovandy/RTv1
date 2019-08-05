@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apavlov <apavlov@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/02 15:44:09 by apavlov           #+#    #+#             */
-/*   Updated: 2019/08/02 15:44:55 by apavlov          ###   ########.fr       */
+/*   Created: 2019/08/05 15:27:27 by apavlov           #+#    #+#             */
+/*   Updated: 2019/08/05 15:27:28 by apavlov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rt.h"
 
-int		main(int argc, char **argv)
+int		sdl_init(t_sdl *sdl)
 {
-	t_rt	rt;
-
-	if (argc != 2)
-		return (put_usage());
-	else
-	{
-		if (read_scene(argv[1], &rt))
-			return (1);
-		if (sdl_init(&rt.sdl))
-			return (1);
-		start_render(&rt);
-	}
-	return (0);
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+		return (error_message((char *)SDL_GetError()));
+	if (!(sdl->win = SDL_CreateWindow("DOOM", SDL_WINDOWPOS_CENTERED, \
+		SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN)))
+		return (error_message((char *)SDL_GetError()));
+	if (!(sdl->win_sur = SDL_GetWindowSurface(sdl->win)))
+		return (error_message((char *)SDL_GetError()));
+	return (1);
 }

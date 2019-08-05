@@ -16,7 +16,7 @@ FLAGS =  -Wall -g -O3 -Wextra #-fsanitize=address  #-Werror
 
 NAME = RTv1
 
-SRC = main.c
+SRC = main.c init.c math.c output.c parser.c plane.c sphere.c render.c
 
 INC = includes/rt.h
 

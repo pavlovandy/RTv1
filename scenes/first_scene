@@ -1,0 +1,18 @@
+sphere
+{
+centre : {1 , 2 , 3}
+radius : 123
+color : 0xffffff
+}
+-
+pov
+{
+centre : {1 , 2 , 3}
+radius : 123
+}
+-
+sphere
+{
+
+}
+-
