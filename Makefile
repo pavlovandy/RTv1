@@ -12,11 +12,11 @@
 
 CC = gcc
 
-FLAGS =  -Wall -g -O3 -Wextra #-fsanitize=address  #-Werror
+FLAGS =  -Wall -g -O3 -Wextra -fsanitize=address  #-Werror
 
 NAME = RTv1
 
-SRC = main.c init.c math.c output.c parser.c plane.c sphere.c render.c
+SRC = main.c init.c math.c output.c parser.c plane.c sphere.c render.c function.c
 
 INC = includes/rt.h
 

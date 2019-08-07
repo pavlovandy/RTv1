@@ -27,9 +27,11 @@ int			read_hex(char *line)
 	while (i < line_len)
 	{
 		if (line[i] >= '0' && line[i] <= '9')
-			res = res << 4 + line[i] - '0';
+			res = (res << 4) + (line[i] - '0');
 		else if (line[i] >= 'A' && line[i] <= 'F')
-			res = res << 4 + line[i] - 'A';
+			res = (res << 4) + (line[i] - 'A');
+		else if (line[i] >= 'a' && line[i] <= 'f')
+			res = (res << 4) + (line[i] - 'a');
 		else
 			return (res);
 		i++;
@@ -42,11 +44,11 @@ int			get_coord_value(char *line, t_vector *vec)
 	char	**split;
 
 	split = ft_strsplit(line, ',');
-	if (*split != NULL || *split + 1 != NULL || *split + 2 != NULL)
+	if (*split == NULL || *(split + 1) == NULL || *(split + 2) == NULL)
 		return (1);
 	vec->x = str_to_double(*split);
-	vec->y = str_to_double(*split + 1);
-	vec->z = str_to_double(*split + 2);
+	vec->y = str_to_double(*(split + 1));
+	vec->z = str_to_double(*(split + 2));
 	return (0);
 }
 
@@ -59,10 +61,10 @@ double		str_to_double(char *line)
 
 	dot_pos = 0;
 	line_len = ft_strlen(line);
-	while (line[dot_pos] != '.')
-		if (++dot_pos == line_len)
-			break ;
+	while (line[dot_pos] != '.' && line[dot_pos] != 0)
+		dot_pos++;
+	dot_pos++;
 	int_part = ft_atoi(line);
-	float_part = dot_pos != line_len ? ft_atoi(line + dot_pos) : 0;
-	return (int_part + (float)float_part / (count_num(float_part) * 10));
+	float_part = (dot_pos != line_len) ? ft_atoi(line + dot_pos) : 0;
+	return (int_part + (double)float_part / (pow(10, count_num(float_part))));
 }

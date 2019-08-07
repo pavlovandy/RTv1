@@ -21,5 +21,5 @@ int		sdl_init(t_sdl *sdl)
 		return (error_message((char *)SDL_GetError()));
 	if (!(sdl->win_sur = SDL_GetWindowSurface(sdl->win)))
 		return (error_message((char *)SDL_GetError()));
-	return (1);
+	return (0);
 }

@@ -22,6 +22,7 @@ int		main(int argc, char **argv)
 	{
 		if (read_scene(argv[1], &rt))
 			return (1);
+		print_scene_data(&rt.scene);
 		if (sdl_init(&rt.sdl))
 			return (1);
 		start_render(&rt);

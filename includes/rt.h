@@ -20,6 +20,7 @@
 # include "../frameworks/SDL2.framework/Headers/SDL.h"
 # include "../frameworks/SDL2_image.framework/Headers/SDL_image.h"
 # include <stdio.h>
+# include "./terminal_colors.h"
 
 # define WIN_WIDTH	1200
 # define WIN_HEIGHT	800
@@ -106,9 +107,11 @@ t_vector	vector_prod(t_vector v1, t_vector v2);
 //output
 int			put_usage(void);
 int			error_message(char *msg);
+void		print_scene_data(t_scene *sc);
 
 //parser
 int			read_scene(char *file, t_rt *rt);
+int			read_sphere_data(int fd, t_sphere_data	*data);
 
 //init
 int			sdl_init(t_sdl *sdl);

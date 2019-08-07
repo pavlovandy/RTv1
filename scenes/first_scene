@@ -1,18 +1,6 @@
 sphere
 {
-centre : {1 , 2 , 3}
-radius : 123
-color : 0xffffff
+	coord : {1000.123412,1000.14314,100.12341}
+	radius : {1}
+	color : {0xff0000}
 }
--
-pov
-{
-centre : {1 , 2 , 3}
-radius : 123
-}
--
-sphere
-{
-
-}
--
