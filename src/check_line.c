@@ -73,11 +73,7 @@ int		check_line_for_value(int fd, float *value, char *value_mark)
 		if (line[ft_strlen(line) - 1] != '}')
 			return (error_message(TRED"Not braced at the end of line"TNULL));
 		line[ft_strlen(line) - 1] = '\0';
-		if ((*value = (float)str_to_double(line + i)) <= 0)
-		{
-			printf("%f\n", *value);
-			return (1);
-		}
+		*value = (float)str_to_double(line + i);
 	}
 	free(line);
 	return (0);

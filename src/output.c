@@ -33,15 +33,9 @@ void	print_scene_data(t_scene *sc) //delete this
 	while (++i < sc->count_obj)
 	{
 		if (sc->obj[i].fig_type == SPHERE)
-		{
 			ft_putstr("There is a sphere\n");
-			printf("%f\n", ((t_sphere_data*)sc->obj[i].data)->radius);
-		}
 		else if (sc->obj[i].fig_type == PLANE)
-		{
 			ft_putstr("There is a plane\n");
-			printf("%f\n", ((t_plane_data*)sc->obj[i].data)->h);
-		}
 		else if (sc->obj[i].fig_type == CONE)
 			ft_putstr("There is a cone\n");
 		else if (sc->obj[i].fig_type == CYLIN)
