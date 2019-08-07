@@ -28,22 +28,26 @@ int		line_routine(int fd, t_rt *rt, char *line)
 			return (error_message(TRED"Sphere data error"TNULL));
 		rt->scene.count_obj++;
 	}
-	// else if (ft_strcmp(line, "point of view"))
-	// 	read_pov_data(fd, &rt->pov);
-	// else if (ft_strcmp(line, "plane"))
-	// {
-	// 	if (rt->scene.count_obj >= 10)
-	// 		return (error_message(TRED"Too much objects"TNULL));
-	// 	rt->scene.obj[rt->scene.count_obj].fig_type = PLANE;
-	// 	if (read_plane_data(fd, rt->scene.obj[rt->scene.count_obj].data))	
-	// 		return (error_message(TRED"Plane data error"TNULL));
-	// 	rt->scene.count_obj++;
-	// }
+	else if (ft_strcmp(line, "point of view") == 0)
+		read_pov_data(fd, &rt->pov);
+	else if (ft_strcmp(line, "plane") == 0)
+	{
+		if (rt->scene.count_obj >= 10)
+			return (error_message(TRED"Too much objects"TNULL));
+		rt->scene.obj[rt->scene.count_obj].fig_type = PLANE;
+		data = &rt->scene.obj[rt->scene.count_obj].data;
+		if (!((*data) = ft_memalloc(sizeof(t_plane_data))))
+			return (error_message(TRED"Can't allocate memory for obj"TNULL));
+		if (read_plane_data(fd, rt->scene.obj[rt->scene.count_obj].data))
+			return (error_message(TRED"Plane data error"TNULL));
+		rt->scene.count_obj++;
+	}
 	else if (ft_strcmp(line, "") == 0)
+		return (0);
+	else
 		return (1);
 	return (0);
 }
-
 
 int		read_scene(char *file, t_rt *rt)
 {

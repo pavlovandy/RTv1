@@ -28,27 +28,20 @@ int		put_usage(void)
 void	print_scene_data(t_scene *sc) //delete this
 {
 	int		i;
-	t_sphere_data	*data;
 
 	i = -1;
 	while (++i < sc->count_obj)
 	{
 		if (sc->obj[i].fig_type == SPHERE)
 		{
-			data = (t_sphere_data*)sc->obj[i].data;
 			ft_putstr("There is a sphere\n");
-			ft_putstr("Num of obj : \n");
-			ft_putnbr(data->cent.z);
-			ft_putchar('\n');
-			ft_putstr("Radius : \n");
-			ft_putnbr(data->cent.x);
-			ft_putchar('\n');
-			ft_putstr("Color : \n");
-			ft_putnbr(data->cent.y);
-			ft_putchar('\n');
+			printf("%f\n", ((t_sphere_data*)sc->obj[i].data)->radius);
 		}
 		else if (sc->obj[i].fig_type == PLANE)
+		{
 			ft_putstr("There is a plane\n");
+			printf("%f\n", ((t_plane_data*)sc->obj[i].data)->h);
+		}
 		else if (sc->obj[i].fig_type == CONE)
 			ft_putstr("There is a cone\n");
 		else if (sc->obj[i].fig_type == CYLIN)

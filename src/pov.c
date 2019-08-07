@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   plane.c                                            :+:      :+:    :+:   */
+/*   pov.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apavlov <apavlov@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/05 14:32:40 by apavlov           #+#    #+#             */
-/*   Updated: 2019/08/05 14:32:40 by apavlov          ###   ########.fr       */
+/*   Created: 2019/08/07 16:28:23 by apavlov           #+#    #+#             */
+/*   Updated: 2019/08/07 16:28:24 by apavlov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rt.h"
 
-int			read_plane_data(int fd, t_plane_data *data)
+int		read_pov_data(int fd, t_pov *pov)
 {
 	if (check_line_for_char(fd, '{'))
 		return (1);
-	if (check_line_for_coord(fd, &data->normal, "normal : {"))
+	if (check_line_for_coord(fd, &pov->coord, "coord : {"))
 		return (1);
-	if (check_line_for_value(fd, &data->h, "h : {"))
-		return (1);
-	if (check_line_for_color(fd, &data->color))
+	if (check_line_for_coord(fd, &pov->dir, "angle : {"))
 		return (1);
 	if (check_line_for_char(fd, '}'))
 		return (1);

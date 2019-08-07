@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	TERMINAL_COLORS_H
+#ifndef TERMINAL_COLORS_H
 # define TERMINAL_COLORS_H
 
 # define TNULL "\x1B[0m"

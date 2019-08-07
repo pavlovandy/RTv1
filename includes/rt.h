@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	RT_H
+#ifndef RT_H
 # define RT_H
 
 # include <fcntl.h>
@@ -49,9 +49,11 @@ typedef struct	s_sphere_data
 	Uint32		color;
 }				t_sphere_data;
 
-typedef struct	s_plane_data
+typedef struct	s_plane_data //change this
 {
-
+	t_vector	normal;
+	float		h;
+	Uint32		color;
 }				t_plane_data;
 
 typedef struct	s_cone_data
@@ -112,6 +114,13 @@ void		print_scene_data(t_scene *sc);
 //parser
 int			read_scene(char *file, t_rt *rt);
 int			read_sphere_data(int fd, t_sphere_data	*data);
+int			read_plane_data(int fd, t_plane_data *data);
+int			read_pov_data(int fd, t_pov *pov);
+
+int			check_line_for_char(int fd, char c);
+int			check_line_for_coord(int fd, t_vector *coord, char *data_mark);
+int			check_line_for_value(int fd, float *value, char *value_mark);
+int			check_line_for_color(int fd, Uint32 *color);
 
 //init
 int			sdl_init(t_sdl *sdl);
