@@ -20,7 +20,7 @@ int			read_plane_data(int fd, t_plane_data *data)
 		return (1);
 	if (check_line_for_value(fd, &data->h, "h : {"))
 		return (1);
-	if (check_line_for_color(fd, &data->color))
+	if (check_line_for_coord(fd, &data->color, "color : {"))
 		return (1);
 	if (check_line_for_char(fd, '}'))
 		return (1);

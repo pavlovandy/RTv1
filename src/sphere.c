@@ -22,7 +22,7 @@ int		read_sphere_data(int fd, t_sphere_data *data)
 		return (1);
 	if (data->radius <= 0)
 		return (error_message(TRED"Negative radius of sphere detected"TNULL));
-	if (check_line_for_color(fd, &data->color))
+	if (check_line_for_coord(fd, &data->color, "color : {"))
 		return (1);
 	if (check_line_for_char(fd, '}'))
 		return (1);

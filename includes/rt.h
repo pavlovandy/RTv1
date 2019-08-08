@@ -46,14 +46,14 @@ typedef struct	s_sphere_data
 {
 	t_vector	cent;
 	float		radius;
-	Uint32		color;
+	t_vector	color;
 }				t_sphere_data;
 
 typedef struct	s_plane_data //change this
 {
 	t_vector	normal;
 	float		h;
-	Uint32		color;
+	t_vector	color;
 }				t_plane_data;
 
 typedef struct	s_cone_data

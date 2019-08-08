@@ -2,7 +2,7 @@ sphere
 {
 	cent : {1000.123412, 1000.14314, 100.12341}
 	radius : {69}
-	color : {0xff0000}
+	color : {0, 255, 0}
 }
 point of view
 {
@@ -13,5 +13,5 @@ plane
 {
 	normal : {1, 1, 1}
 	h : {1000}
-	color : {0xff0000}
+	color : {0, 255, 0}
 }
