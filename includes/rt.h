@@ -17,14 +17,23 @@
 # include "../libft/libft.h"
 # include <math.h>
 # include <pthread.h>
-# include "../frameworks/SDL2.framework/Headers/SDL.h"
-# include "../frameworks/SDL2_image.framework/Headers/SDL_image.h"
+# ifdef	APPLE
+#  include "../frameworks/SDL2.framework/Headers/SDL.h"
+# else
+#  include <SDL2/SDL.h>
+# endif
 # include <stdio.h>
 # include "./terminal_colors.h"
 
 # define WIN_WIDTH	1200
 # define WIN_HEIGHT	800
 # define MAX_OBJ_COUNT 10
+
+# define VW	1.2f
+# define VH	0.8f
+# define D	1
+
+# define BIG_VALUE 9e9
 
 typedef	struct s_fig	t_fig;
 typedef	struct s_vector	t_vector;
@@ -34,6 +43,12 @@ typedef	struct s_rt		t_rt;
 typedef	struct s_pov	t_pov;
 
 enum	fig{SPHERE = 0, PLANE, CONE, CYLIN};
+
+typedef struct	s_roots
+{
+	float	t1;
+	float	t2;
+}				t_roots;
 
 struct	s_vector
 {
@@ -46,14 +61,14 @@ typedef struct	s_sphere_data
 {
 	t_vector	cent;
 	float		radius;
-	t_vector	color;
+	Uint32		color;
 }				t_sphere_data;
 
 typedef struct	s_plane_data //change this
 {
 	t_vector	normal;
 	float		h;
-	t_vector	color;
+	Uint32		color;
 }				t_plane_data;
 
 typedef struct	s_cone_data
@@ -103,8 +118,14 @@ int			get_coord_value(char *line, t_vector *vec);
 int			read_hex(char *line);
 
 //math
-float		scalar_prod(t_vector v1, t_vector v2);
+float		dot_prod(t_vector v1, t_vector v2);
 t_vector	vector_prod(t_vector v1, t_vector v2);
+t_vector	subtract_vector(t_vector a, t_vector b);
+t_vector	add_vector(t_vector a, t_vector b);
+
+//sphere roots
+t_roots		sphere_roots(t_vector view_point, t_vector view_port, t_sphere_data *sphere);
+
 
 //output
 int			put_usage(void);
@@ -126,6 +147,13 @@ int			check_line_for_color(int fd, Uint32 *color);
 int			sdl_init(t_sdl *sdl);
 
 //render
+void		put_pixel(int x, int y, Uint32 color, SDL_Surface *surr);
+Uint32		get_pixel(int x, int y, SDL_Surface *surr);
+
 void		start_render(t_rt *rt);
+
+//user events
+int			user_commands(t_rt *rt);
+int			there_will_be_loop(t_rt *rt);
 
 #endif

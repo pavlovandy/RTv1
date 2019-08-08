@@ -12,7 +12,7 @@
 
 #include "../includes/rt.h"
 
-float		scalar_prod(t_vector v1, t_vector v2)
+float		dot_prod(t_vector v1, t_vector v2)
 {
 	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
@@ -25,4 +25,14 @@ t_vector	vector_prod(t_vector v1, t_vector v2)
 	res.y = v1.x * v2.z - v1.z * v2.x;
 	res.z = v1.y * v2.x - v1.x * v2.y;
 	return (res);
+}
+
+t_vector	subtract_vector(t_vector a, t_vector b)
+{
+	return ((t_vector){a.x - b.x, a.y - b.y, a.z - b.z});
+}
+
+t_vector	add_vectors(t_vector a, t_vector b)
+{
+	return ((t_vector){a.x + b.x, a.y + b.y, a.z + b.z});
 }

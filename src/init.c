@@ -23,3 +23,19 @@ int		sdl_init(t_sdl *sdl)
 		return (error_message((char *)SDL_GetError()));
 	return (0);
 }
+
+void	put_pixel(int x, int y, Uint32 color, SDL_Surface *surr)
+{
+	Uint32	*pixels;
+
+	pixels = surr->pixels;
+	pixels[y * surr->w + x] = color;
+}
+
+Uint32	get_pixel(int x, int y, SDL_Surface *surr)
+{
+	Uint32	*pixels;
+
+	pixels = surr->pixels;
+	return (pixels[y * surr->w + x]);
+}

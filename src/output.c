@@ -33,7 +33,7 @@ void	print_scene_data(t_scene *sc) //delete this
 	while (++i < sc->count_obj)
 	{
 		if (sc->obj[i].fig_type == SPHERE)
-			ft_putstr("There is a sphere\n");
+			ft_putstr(TCYN"There is a sphere\n"TNULL);
 		else if (sc->obj[i].fig_type == PLANE)
 			ft_putstr("There is a plane\n");
 		else if (sc->obj[i].fig_type == CONE)
