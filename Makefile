@@ -18,7 +18,7 @@ NAME = RTv1
 
 SRC =	main.c init.c math.c output.c parser.c\
 		plane.c sphere.c render.c function.c check_line.c\
-		pov.c
+		pov.c user_events.c lights.c
 
 INC = includes/rt.h
 

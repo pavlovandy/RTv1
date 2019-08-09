@@ -54,15 +54,17 @@ Uint32		ray_trace(t_vector view_point, t_vector view_port, t_rt *rt)
 	return (BACKGROUND_COLOR);
 }
 
+float		calculate_lighting()
+{
+	
+}
+
 void		start_render(t_rt *rt)
 {
 	int			x;
 	int			y;
 	t_vector	d;
-	t_vector	o;
 	Uint32		color;
-
-	o = (t_vector){0, 0, 0};
 
 	y = -WIN_HEIGHT / 2 - 1;
 	while (++y < WIN_HEIGHT / 2)
@@ -71,7 +73,7 @@ void		start_render(t_rt *rt)
 		while (++x < WIN_WIDTH / 2)
 		{
 			d = canvas_to_viewport(x, y);
-			color = ray_trace(o, d, rt);
+			color = ray_trace(rt->pov.coord, d, rt);
 			put_pixel(x + WIN_WIDTH / 2, y + WIN_HEIGHT / 2, color, rt->sdl.win_sur);
 		}
 	}

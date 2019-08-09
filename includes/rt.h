@@ -17,7 +17,7 @@
 # include "../libft/libft.h"
 # include <math.h>
 # include <pthread.h>
-# ifdef	APPLE
+# ifdef	__APPLE__
 #  include "../frameworks/SDL2.framework/Headers/SDL.h"
 # else
 #  include <SDL2/SDL.h>
@@ -28,6 +28,7 @@
 # define WIN_WIDTH	1200
 # define WIN_HEIGHT	800
 # define MAX_OBJ_COUNT 10
+# define MAX_LIGHTING_COUNT 10
 
 # define VW	1.2f
 # define VH	0.8f
@@ -99,10 +100,19 @@ struct	s_pov
 	t_vector	dir;
 };
 
+typedef struct	s_light
+{
+	char		*type;
+	float		intensity;
+	t_vector	v;
+}				t_light;
+
 struct	s_scene
 {
-	int		count_obj;
-	t_fig	obj[MAX_OBJ_COUNT];
+	int			count_obj;
+	t_fig		obj[MAX_OBJ_COUNT];
+	int			count_light;
+	t_light		light[MAX_LIGHTING_COUNT];
 };
 
 struct	s_rt
@@ -137,11 +147,13 @@ int			read_scene(char *file, t_rt *rt);
 int			read_sphere_data(int fd, t_sphere_data	*data);
 int			read_plane_data(int fd, t_plane_data *data);
 int			read_pov_data(int fd, t_pov *pov);
+int			read_light_data(int fd, t_light *light);
 
 int			check_line_for_char(int fd, char c);
 int			check_line_for_coord(int fd, t_vector *coord, char *data_mark);
 int			check_line_for_value(int fd, float *value, char *value_mark);
 int			check_line_for_color(int fd, Uint32 *color);
+int			check_line_for_string(int fd, char **str, char *str_mark);
 
 //init
 int			sdl_init(t_sdl *sdl);

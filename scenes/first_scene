@@ -2,10 +2,39 @@ sphere
 {
 	cent : {0, -1, 10}
 	radius : {1}
+	color : {0xff00ff}
+}
+sphere
+{
+	cent : {2, 1, 10}
+	radius : {2}
 	color : {0xff0000}
+}
+sphere
+{
+	cent : {0, 1, 10}
+	radius : {3}
+	color : {0x00ff00}
+}
+light
+{
+	type : {point}
+	intensity : {0.2}
+	v : {1, 1, 1}
+}
+light
+{
+	type : {direct}
+	intensity : {0.4}
+	v : {1, 1, 1}
+}
+light
+{
+	type : {ambient}
+	intensity : {0.2}
 }
 point of view
 {
-	coord : {1, 1, 1}
+	coord : {0, 0, 0}
 	angle : {1, 1, 1}
 }
