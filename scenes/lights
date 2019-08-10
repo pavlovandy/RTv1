@@ -1,0 +1,6 @@
+light
+{
+	type : {dot}
+	intensity : {0.2}
+	v : {1, 2, 3}
+}

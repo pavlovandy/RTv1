@@ -46,7 +46,7 @@ int		line_routine(int fd, t_rt *rt, char *line)
 	{
 		if (rt->scene.count_light >= 10)
 			return (error_message(TRED"Too much lighting"TNULL));
-		if (read_light_data(fd, rt->scene.light))
+		if (read_light_data(fd, rt->scene.light + rt->scene.count_light))
 			return (error_message(TRED"Light data error"TNULL));
 		rt->scene.count_light++;
 	}

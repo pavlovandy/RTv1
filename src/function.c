@@ -46,9 +46,9 @@ int			get_coord_value(char *line, t_vector *vec)
 	split = ft_strsplit(line, ',');
 	if (*split == NULL || *(split + 1) == NULL || *(split + 2) == NULL)
 		return (1);
-	vec->x = str_to_double(*split);
-	vec->y = str_to_double(*(split + 1));
-	vec->z = str_to_double(*(split + 2));
+	(*vec)[0] = str_to_double(*split);
+	(*vec)[1] = str_to_double(*(split + 1));
+	(*vec)[2] = str_to_double(*(split + 2));
 	return (0);
 }
 

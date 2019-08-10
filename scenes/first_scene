@@ -1,37 +1,47 @@
 sphere
 {
-	cent : {0, -1, 10}
+	cent : {2, 0, 4}
 	radius : {1}
-	color : {0xff00ff}
+	color : {0, 0, 255}
+	specular : {500}
 }
 sphere
 {
-	cent : {2, 1, 10}
-	radius : {2}
-	color : {0xff0000}
+	cent : {0, -1, 3}
+	radius : {1}
+	color : {255, 0, 0}
+	specular : {500}
 }
 sphere
 {
-	cent : {0, 1, 10}
-	radius : {3}
-	color : {0x00ff00}
+	cent : {-2, 0, 4}
+	radius : {1}
+	color : {0, 255, 0}
+	specular : {10}
 }
-light
+sphere
 {
-	type : {point}
-	intensity : {0.2}
-	v : {1, 1, 1}
-}
-light
-{
-	type : {direct}
-	intensity : {0.4}
-	v : {1, 1, 1}
+	cent : {0, -5001, 0}
+	radius : {5000}
+	color : {255, 255, 0}
+	specular : {1000}
 }
 light
 {
 	type : {ambient}
 	intensity : {0.2}
+}
+light
+{
+	type : {point}
+	intensity : {0.6}
+	v : {2, 1, 0}
+}
+light
+{
+	type : {direct}
+	intensity : {0.2}
+	v : {1, 4, 4}
 }
 point of view
 {

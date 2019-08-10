@@ -26,24 +26,32 @@
 # include "./terminal_colors.h"
 
 # define WIN_WIDTH	1200
-# define WIN_HEIGHT	800
+# define WIN_HEIGHT	720
 # define MAX_OBJ_COUNT 10
 # define MAX_LIGHTING_COUNT 10
+# define RGB(v) (((int)v[0] << 16) + ((int)v[1] << 8) + (int)v[2])
 
-# define VW	1.2f
-# define VH	0.8f
 # define D	1
+# define VW	(1.4)
+# define VH	(0.8)
+
 
 # define BIG_VALUE 9e9
 
 typedef	struct s_fig	t_fig;
-typedef	struct s_vector	t_vector;
 typedef	struct s_sdl	t_sdl;
 typedef	struct s_scene	t_scene;
 typedef	struct s_rt		t_rt;
 typedef	struct s_pov	t_pov;
-
-enum	fig{SPHERE = 0, PLANE, CONE, CYLIN};
+typedef	float t_vector	__attribute__ ((vector_size(sizeof(float) * 4)));
+enum	e_fig
+{
+	SPHERE = 0, PLANE, CONE, CYLIN
+};
+enum	e_light
+{
+	AMBIENT = 0, DIRECT, POINT
+};
 
 typedef struct	s_roots
 {
@@ -51,25 +59,20 @@ typedef struct	s_roots
 	float	t2;
 }				t_roots;
 
-struct	s_vector
-{
-	float	x;
-	float	y;
-	float	z;
-};
-
 typedef struct	s_sphere_data
 {
 	t_vector	cent;
 	float		radius;
-	Uint32		color;
+	t_vector	color;
+	int			specular;
 }				t_sphere_data;
 
 typedef struct	s_plane_data //change this
 {
 	t_vector	normal;
 	float		h;
-	Uint32		color;
+	t_vector	color;
+	int			specular;
 }				t_plane_data;
 
 typedef struct	s_cone_data
@@ -103,6 +106,7 @@ struct	s_pov
 typedef struct	s_light
 {
 	char		*type;
+	int			type_num;
 	float		intensity;
 	t_vector	v;
 }				t_light;
@@ -115,11 +119,29 @@ struct	s_scene
 	t_light		light[MAX_LIGHTING_COUNT];
 };
 
+typedef	struct	s_pixel_cal
+{
+	t_vector	n;
+	t_vector	l;
+	t_vector	o;
+	t_vector	color;
+	t_vector	v;
+	t_vector	p;
+	t_vector	r;
+	int			closest_obj;
+	float		closest_dist;
+	t_roots		roots;
+	float		intensity;
+	float		scalar;
+	int			specular;
+}				t_pixel_cal;
+
 struct	s_rt
 {
 	t_sdl	sdl;
 	t_scene	scene;
 	t_pov	pov;
+
 };
 
 //function
@@ -130,8 +152,8 @@ int			read_hex(char *line);
 //math
 float		dot_prod(t_vector v1, t_vector v2);
 t_vector	vector_prod(t_vector v1, t_vector v2);
-t_vector	subtract_vector(t_vector a, t_vector b);
-t_vector	add_vector(t_vector a, t_vector b);
+float		vect_len(t_vector a);
+t_vector	multi_vect(t_vector a, float multi);
 
 //sphere roots
 t_roots		sphere_roots(t_vector view_point, t_vector view_port, t_sphere_data *sphere);
@@ -152,6 +174,7 @@ int			read_light_data(int fd, t_light *light);
 int			check_line_for_char(int fd, char c);
 int			check_line_for_coord(int fd, t_vector *coord, char *data_mark);
 int			check_line_for_value(int fd, float *value, char *value_mark);
+int			check_line_for_int_value(int fd, int *value, char *value_mark);
 int			check_line_for_color(int fd, Uint32 *color);
 int			check_line_for_string(int fd, char **str, char *str_mark);
 
@@ -163,6 +186,7 @@ void		put_pixel(int x, int y, Uint32 color, SDL_Surface *surr);
 Uint32		get_pixel(int x, int y, SDL_Surface *surr);
 
 void		start_render(t_rt *rt);
+float		calculate_lighting(t_pixel_cal *pc, t_rt *rt);
 
 //user events
 int			user_commands(t_rt *rt);
