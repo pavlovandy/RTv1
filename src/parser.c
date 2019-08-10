@@ -42,10 +42,18 @@ int		line_routine(int fd, t_rt *rt, char *line)
 			return (error_message(TRED"Plane data error"TNULL));
 		rt->scene.count_obj++;
 	}
+	else if (ft_strcmp(line, "light") == 0)
+	{
+		if (rt->scene.count_light >= 10)
+			return (error_message(TRED"Too much lighting"TNULL));
+		if (read_light_data(fd, rt->scene.light + rt->scene.count_light))
+			return (error_message(TRED"Light data error"TNULL));
+		rt->scene.count_light++;
+	}
 	else if (ft_strcmp(line, "") == 0)
 		return (0);
 	else
-		return (1);
+		return (error_message(TRED"Something unknown"TNULL));
 	return (0);
 }
 
@@ -57,6 +65,7 @@ int		read_scene(char *file, t_rt *rt)
 	if ((fd = open(file, O_RDONLY)) == -1)
 		return (error_message(TRED"File problem"TRED));
 	rt->scene.count_obj = 0;
+	rt->scene.count_light = 0;
 	rt->pov.coord = (t_vector){0, 0, 0};
 	rt->pov.dir = (t_vector){0, 0, 0};
 	while (get_next_line(fd, &line) > 0)

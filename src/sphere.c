@@ -20,7 +20,7 @@ t_roots		sphere_roots(t_vector view_point, t_vector view_port, t_sphere_data *sp
 	float		c;
 	float		d;
 
-	vr = subtract_vector(view_point, sphere->cent);
+	vr = view_point - sphere->cent;
 	a = dot_prod(view_port, view_port);
 	b = 2 * dot_prod(vr, view_port);
 	c = dot_prod(vr, vr) - sphere->radius * sphere->radius;
@@ -41,7 +41,13 @@ int		read_sphere_data(int fd, t_sphere_data *data)
 		return (1);
 	if (data->radius <= 0)
 		return (error_message(TRED"Negative radius of sphere detected"TNULL));
-	if (check_line_for_color(fd, &data->color))
+	if (check_line_for_coord(fd, &data->color, "color : {"))
+		return (1);
+	if (data->color[0] > 255 || data->color[1] > 255 || data->color[2] > 255)
+		return (error_message(TRED"Bad color values"TNULL));
+	if (data->color[0] < 0 || data->color[1] < 0 || data->color[2] < 0)
+		return (error_message(TRED"Bad color values"TNULL));
+	if (check_line_for_int_value(fd, &data->specular, "specular : {"))
 		return (1);
 	if (check_line_for_char(fd, '}'))
 		return (1);

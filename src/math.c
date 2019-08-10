@@ -12,27 +12,30 @@
 
 #include "../includes/rt.h"
 
+//vector math
+
 float		dot_prod(t_vector v1, t_vector v2)
 {
-	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+	return (v1[0] * v2[0] + v1[1] * v2[1] \
+			+ v1[2] * v2[2]);
 }
 
 t_vector	vector_prod(t_vector v1, t_vector v2)
 {
 	t_vector	res;
 
-	res.x = v1.y * v2.z - v1.z * v2.y;
-	res.y = v1.x * v2.z - v1.z * v2.x;
-	res.z = v1.y * v2.x - v1.x * v2.y;
+	res[0] = v1[1] * v2[2] - v1[2] * v2[1];
+	res[1] = v1[0] * v2[2] - v1[2] * v2[0];
+	res[2] = v1[1] * v2[0] - v1[0] * v2[1];
 	return (res);
 }
 
-t_vector	subtract_vector(t_vector a, t_vector b)
+float		vect_len(t_vector a)
 {
-	return ((t_vector){a.x - b.x, a.y - b.y, a.z - b.z});
+	return (sqrt(dot_prod(a, a)));
 }
 
-t_vector	add_vectors(t_vector a, t_vector b)
+t_vector	multi_vect(t_vector a, float multi)
 {
-	return ((t_vector){a.x + b.x, a.y + b.y, a.z + b.z});
+	return (t_vector){a[0] * multi, a[1] * multi, a[2] * multi};
 }

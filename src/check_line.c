@@ -102,3 +102,52 @@ int		check_line_for_color(int fd, Uint32 *color)
 	free(line);
 	return (0);
 }
+
+int		check_line_for_string(int fd, char **str, char *str_mark)
+{
+	char	*line;
+	int		i;
+
+	if (get_next_line(fd, &line) < 1)
+		return (error_message(TRED"Not a full data"TNULL));
+	i = 0;
+	while (line[i] != 0 && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	if (ft_strncmp(line + i, str_mark, ft_strlen(str_mark)))
+		return (error_message(TRED"String line bad formated"TNULL));
+	else
+	{
+		i += ft_strlen(str_mark);
+		if (line[ft_strlen(line) - 1] != '}')
+			return (error_message(TRED"Not braced at the end of line"TNULL));
+		line[ft_strlen(line) - 1] = '\0';
+		if ((*str = ft_strdup(line + i)) == 0)
+			return (error_message(TRED"String line bad formated"TNULL));
+	}
+	free(line);
+	return (0);
+}
+
+int		check_line_for_int_value(int fd, int *value, char *value_mark)
+{
+	char	*line;
+	int		i;
+
+	if (get_next_line(fd, &line) < 1)
+		return (error_message(TRED"Not a full data"TNULL));
+	i = 0;
+	while (line[i] != 0 && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	if (ft_strncmp(line + i, value_mark, ft_strlen(value_mark)))
+		return (error_message(TRED"Value line bad formated"TNULL));
+	else
+	{
+		i += ft_strlen(value_mark);
+		if (line[ft_strlen(line) - 1] != '}')
+			return (error_message(TRED"Not braced at the end of line"TNULL));
+		line[ft_strlen(line) - 1] = '\0';
+		*value = (int)ft_atoi(line + i);
+	}
+	free(line);
+	return (0);
+}

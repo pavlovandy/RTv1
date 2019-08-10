@@ -35,12 +35,12 @@ void	print_scene_data(t_scene *sc) //delete this
 		if (sc->obj[i].fig_type == SPHERE)
 			ft_putstr(TCYN"There is a sphere\n"TNULL);
 		else if (sc->obj[i].fig_type == PLANE)
-			ft_putstr("There is a plane\n");
+			ft_putstr(TCYN"There is a plane\n"TNULL);
 		else if (sc->obj[i].fig_type == CONE)
-			ft_putstr("There is a cone\n");
+			ft_putstr(TCYN"There is a cone\n"TNULL);
 		else if (sc->obj[i].fig_type == CYLIN)
-			ft_putstr("There is a cylinder\n");
+			ft_putstr(TCYN"There is a cylinder\n"TNULL);
 		else
-			ft_putstr("What the hell is it\n");
+			ft_putstr(TRED"What the hell is it\n"TNULL);
 	}
 }
