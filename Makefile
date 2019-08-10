@@ -12,13 +12,13 @@
 
 CC = gcc
 
-FLAGS =  -Wall -g -O3 -Wextra -fsanitize=address  #-Werror
+FLAGS =  -Wall -g -O3 -Wextra #-fsanitize=address  #-Werror
 
 NAME = RTv1
 
 SRC =	main.c init.c math.c output.c parser.c\
 		plane.c sphere.c render.c function.c check_line.c\
-		pov.c
+		pov.c user_events.c
 
 INC = includes/rt.h
 
@@ -34,19 +34,15 @@ FT = ./libft/
 
 FT_LIB	= $(addprefix $(FT),libft.a)
 
-LINKS = -L$(FT) -l ft
+LINKS = -L$(FT) -l ft -lm -lSDL2
 
-SDL_PATH = ./framework
+INCLUDES = 		-I$(FT) -I$(INC_DIR)
+				
 
-INCLUDES = 		-I$(FT) -I$(INC_DIR) \
-				-I./frameworks/SDL2.framework/Headers \
-				-I./frameworks/SDL2_image.framework/Headers \
-				-F./frameworks
-
-FRAMEWORKS = 	-F./frameworks \
+#FRAMEWORKS = 	-F./frameworks \
 				-rpath ./frameworks \
 				-framework AppKit -framework OpenGL \
-				-framework SDL2 -framework SDL2_image \
+				-framework SDL2 \
 
 all: obj_dir $(FT_LIB) $(NAME)
 	echo 'Compilated!'
@@ -55,10 +51,10 @@ obj_dir:
 	mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJ)
-	$(CC) $(FLAGS) $(FRAMEWORKS) $(OBJ) $(LINKS) -o $(NAME)
+	$(CC) -o $(NAME) $(FLAGS) $(OBJ) $(LINKS) 
 
 $(OBJ_DIR)%.o:$(SRC_DIR)%.c $(INC)
-	$(CC) $(FLAGS) $(INCLUDES) -o $@ -c $<
+	$(CC) $(FLAGS) $(INCLUDES) -o $@ -c $< 
 
 $(FT_LIB):
 	make -C $(FT)
