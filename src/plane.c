@@ -32,3 +32,4 @@ int			read_plane_data(int fd, t_plane_data *data)
 		return (1);
 	return (0);
 }
+

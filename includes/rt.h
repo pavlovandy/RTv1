@@ -30,6 +30,8 @@
 # define MAX_OBJ_COUNT 10
 # define MAX_LIGHTING_COUNT 10
 # define RGB(v) (((int)v[0] << 16) + ((int)v[1] << 8) + (int)v[2])
+# define ROTATION_SPEED 0.01
+# define TRANSLATE_SPEED 0.1
 
 # define D	1
 # define VW	(1.4)
@@ -101,6 +103,10 @@ struct	s_pov
 {
 	t_vector	coord;
 	t_vector	dir;
+	float		cx;
+	float		cy;
+	float		sx;
+	float		sy;
 };
 
 typedef struct	s_light
@@ -154,6 +160,8 @@ float		dot_prod(t_vector v1, t_vector v2);
 t_vector	vector_prod(t_vector v1, t_vector v2);
 float		vect_len(t_vector a);
 t_vector	multi_vect(t_vector a, float multi);
+t_vector	rotate_around_x_y(t_vector a, t_pov	pov);
+t_vector	ft_rotate_camera(t_vector direction, t_pov *pov);
 
 //sphere roots
 t_roots		sphere_roots(t_vector view_point, t_vector view_port, t_sphere_data *sphere);

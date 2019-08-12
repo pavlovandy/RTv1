@@ -69,6 +69,7 @@ void		start_render(t_rt *rt)
 		while (++x < WIN_WIDTH / 2)
 		{
 			d = canvas_to_viewport(x, y);
+			//d = ft_rotate_camera(d, &rt->pov);
 			color = ray_trace(rt->pov.coord, d, rt);
 			if (color[0] > 255)
 				color[0] = 255;
