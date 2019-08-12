@@ -16,7 +16,7 @@ int		sdl_init(t_sdl *sdl)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		return (error_message((char *)SDL_GetError()));
-	if (!(sdl->win = SDL_CreateWindow("DOOM", SDL_WINDOWPOS_CENTERED, \
+	if (!(sdl->win = SDL_CreateWindow("RTv1", SDL_WINDOWPOS_CENTERED, \
 		SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN)))
 		return (error_message((char *)SDL_GetError()));
 	if (!(sdl->win_sur = SDL_GetWindowSurface(sdl->win)))
@@ -39,4 +39,13 @@ Uint32	get_pixel(int x, int y, SDL_Surface *surr)
 
 	pixels = surr->pixels;
 	return (pixels[y * surr->w + x]);
+}
+
+int		config_intersect_function(t_rt *rt)
+{
+	rt->fun.inter_f[SPHERE] = sphere_roots;
+	rt->fun.inter_f[PLANE] = plane_roots;
+	rt->fun.inter_f[CONE] = cone_roots;
+	rt->fun.inter_f[CYLIN] = cylin_roots;
+	return (0);
 }

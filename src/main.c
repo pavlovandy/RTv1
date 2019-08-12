@@ -25,6 +25,8 @@ int		main(int argc, char **argv)
 		print_scene_data(&rt.scene);
 		if (sdl_init(&rt.sdl))
 			return (1);
+		if (config_intersect_function(&rt))
+			return (1);
 		there_will_be_loop(&rt);
 	}
 	return (0);

@@ -16,41 +16,56 @@
 
 t_vector	canvas_to_viewport(int x, int y)
 {
-	return ((t_vector){(float)x * VW / WIN_WIDTH, -(float)y * VH / WIN_HEIGHT, (float)D});
+	return ((t_vector){(float)x * VW / WIN_WIDTH, -(float)y * VH / WIN_HEIGHT, -(float)D});
+}
+
+void		check_closest_inter(t_rt *rt, t_pixel_cal *pc)
+{
+	int		obj_iter;
+
+	pc->closest_dist = BIG_VALUE;
+	pc->closest_obj = -1;
+	obj_iter = -1;
+	while (++obj_iter < rt->scene.count_obj)
+	{
+		pc->roots = rt->fun.inter_f[rt->scene.obj[obj_iter].fig_type]\
+			(pc->eye_point, pc->eye_point_dir, rt->scene.obj[obj_iter].data, pc);
+		if (pc->roots.t1 < pc->closest_dist && pc->roots.t1 > 1)
+		{
+			pc->closest_dist = pc->roots.t1;
+			pc->closest_obj = obj_iter;
+		}
+		if (pc->roots.t2 < pc->closest_dist && pc->roots.t2 > 1)
+		{
+			pc->closest_dist = pc->roots.t2;
+			pc->closest_obj = obj_iter;
+		}
+	}
 }
 
 t_vector	ray_trace(t_vector view_point, t_vector view_port, t_rt *rt)
 {
-	int		obj_iter;
-	t_sphere_data *data;
 	t_pixel_cal		pc;
 
-	pc.closest_dist = BIG_VALUE;
-	pc.closest_obj = -1;
-	obj_iter = -1;
-	while (++obj_iter < rt->scene.count_obj)
-	{
-		pc.roots = sphere_roots(view_point, view_port, rt->scene.obj[obj_iter].data);
-		if (pc.roots.t1 < pc.closest_dist && pc.roots.t1 > 1)
-		{
-			pc.closest_dist = pc.roots.t1;
-			pc.closest_obj = obj_iter;
-		}
-		if (pc.roots.t2 < pc.closest_dist && pc.roots.t2 > 1)
-		{
-			pc.closest_dist = pc.roots.t2;
-			pc.closest_obj = obj_iter;
-		}
-	}
+	pc.eye_point = view_point;
+	pc.eye_point_dir = view_port;
+	check_closest_inter(rt, &pc);
 	if (pc.closest_obj > -1)
 	{
-		pc.p = view_point + multi_vect(view_port, pc.closest_dist);
-		data = rt->scene.obj[pc.closest_obj].data;
-		pc.n = pc.p - data->cent;
-		pc.n = multi_vect(pc.n, (1.0 / vect_len(pc.n)));
-		pc.specular = data->specular;
-		pc.v = -view_port;
-		return (multi_vect(data->color, calculate_lighting(&pc, rt)));
+		if (rt->scene.obj[pc.closest_obj].fig_type == SPHERE)
+			sphere_cal(&pc, rt->scene.obj[pc.closest_obj].data);
+		else if (rt->scene.obj[pc.closest_obj].fig_type == PLANE)
+			plane_cal(&pc, rt->scene.obj[pc.closest_obj].data);
+		else if (rt->scene.obj[pc.closest_obj].fig_type == CONE)
+		{
+			;
+		}
+		else if (rt->scene.obj[pc.closest_obj].fig_type == CYLIN)
+		{
+			;
+		}
+		//return (pc.color);
+		return (multi_vect(pc.color, calculate_lighting(&pc, rt)));
 	}
 	return (BACKGROUND_COLOR);
 }
@@ -71,12 +86,7 @@ void		start_render(t_rt *rt)
 			d = canvas_to_viewport(x, y);
 			//d = ft_rotate_camera(d, &rt->pov);
 			color = ray_trace(rt->pov.coord, d, rt);
-			if (color[0] > 255)
-				color[0] = 255;
-				if (color[1] > 255)
-				color[1] = 255;
-				if (color[2] > 255)
-				color[2] = 255;
+			color = trim_color(color);
 			put_pixel(x + WIN_WIDTH / 2, y + WIN_HEIGHT / 2, RGB(color), rt->sdl.win_sur);
 		}
 	}

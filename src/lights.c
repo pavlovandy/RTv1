@@ -12,39 +12,73 @@
 
 #include "../includes/rt.h"
 
-float		calculate_lighting(t_pixel_cal *p_pc, t_rt *rt)
+int			check_shadow_inter(t_pixel_cal *pc, t_rt *rt, float min, float max)
+{
+	int		obj_iter;
+	float	closest_dist;
+	int		closest_obj;
+	t_roots	roots;
+
+	closest_dist = max;
+	closest_obj = -1;
+	obj_iter = -1;
+	while (++obj_iter < rt->scene.count_obj)
+	{
+		roots = rt->fun.inter_f[rt->scene.obj[obj_iter].fig_type]\
+			(pc->intersect_point, pc->light_dir, rt->scene.obj[obj_iter].data, pc);
+		if (roots.t1 < closest_dist && roots.t1 > min)
+		{
+			closest_dist = roots.t1;
+			closest_obj = obj_iter;
+		}
+		if (roots.t2 < closest_dist && roots.t2 > min)
+		{
+			closest_dist = roots.t2;
+			closest_obj = obj_iter;
+		}
+	}
+	return (closest_obj);
+}
+
+float		calculate_lighting(t_pixel_cal *pc, t_rt *rt)
 {
 	int			i;
 	t_light		*light;
-	t_pixel_cal	pc;
-
-	pc = *p_pc;
-	pc.intensity = 0.f;
+	float		t_max;
+	
+	pc->intensity = 0.f;
 	i = -1;
 	while (++i < rt->scene.count_light)
 	{
 		light = rt->scene.light + i;
 		if (light->type_num == AMBIENT)
-			pc.intensity += light->intensity;
+			pc->intensity += light->intensity;
 		else 
 		{
 			if (light->type_num == POINT)
-				pc.l = light->v - pc.p;
+				pc->light_dir = light->v - pc->intersect_point;
 			else
-				pc.l = light->v;
-			pc.scalar = dot_prod(pc.n, pc.l);
-			if (pc.scalar > 0)
-				pc.intensity += (light->intensity * pc.scalar / (vect_len(pc.l) * vect_len(pc.n)));
-			if (pc.specular != -1) 
+				pc->light_dir = light->v;
+			t_max = (light->type_num == POINT) ? 1 : BIG_VALUE;
+			// if (check_shadow_inter(pc, rt, 0.001, t_max) != -1)
+			// 	continue ;
+
+			pc->scalar = dot_prod(pc->normal, pc->light_dir);
+			if (pc->scalar > 0)
 			{
-				pc.r =  multi_vect(pc.n, 2 *dot_prod(pc.n, pc.l)) - pc.l;
-				pc.scalar = dot_prod(pc.r, pc.v);
-				if (pc.scalar > 0)
-					pc.intensity += light->intensity * pow(pc.scalar / (vect_len(pc.r) * vect_len(pc.v)), pc.specular);
+				pc->intensity += (light->intensity * pc->scalar / (vect_len(pc->light_dir) * vect_len(pc->normal)));
 			}
+
+			// if (pc->specular != -1)
+			// {
+			// 	pc->reflected_ray =  multi_vect(pc->normal, 2 *dot_prod(pc->normal, pc->light_dir)) - pc->light_dir;
+			// 	pc->scalar = dot_prod(pc->reflected_ray, pc->to_eye_dir);
+			// 	if (pc->scalar > 0)
+			// 		pc->intensity += light->intensity * pow(pc->scalar / (vect_len(pc->reflected_ray) * vect_len(pc->to_eye_dir)), pc->specular);
+			// }
 		}
 	}
-	return (pc.intensity);
+	return (pc->intensity);
 }
 
 int		get_light_type(t_light *light)

@@ -32,6 +32,7 @@
 # define RGB(v) (((int)v[0] << 16) + ((int)v[1] << 8) + (int)v[2])
 # define ROTATION_SPEED 0.01
 # define TRANSLATE_SPEED 0.1
+# define DIFFERENT_OBJ 4
 
 # define D	1
 # define VW	(1.4)
@@ -46,6 +47,7 @@ typedef	struct s_scene	t_scene;
 typedef	struct s_rt		t_rt;
 typedef	struct s_pov	t_pov;
 typedef	float t_vector	__attribute__ ((vector_size(sizeof(float) * 4)));
+
 enum	e_fig
 {
 	SPHERE = 0, PLANE, CONE, CYLIN
@@ -72,7 +74,7 @@ typedef struct	s_sphere_data
 typedef struct	s_plane_data //change this
 {
 	t_vector	normal;
-	float		h;
+	t_vector	dot;
 	t_vector	color;
 	int			specular;
 }				t_plane_data;
@@ -127,33 +129,45 @@ struct	s_scene
 
 typedef	struct	s_pixel_cal
 {
-	t_vector	n;
-	t_vector	l;
-	t_vector	o;
+	t_vector	normal; //normale
+	t_vector	light_dir;
+	t_vector	eye_point; //viewpoint
 	t_vector	color;
-	t_vector	v;
-	t_vector	p;
-	t_vector	r;
+	t_vector	to_eye_dir;
+	t_vector	intersect_point;
+	t_vector	reflected_ray;
+	t_vector	eye_point_dir; //eye_point
 	int			closest_obj;
 	float		closest_dist;
 	t_roots		roots;
 	float		intensity;
 	float		scalar;
 	int			specular;
+	int			t_min;
+	int			t_max;
+	int			sign; //for normal of plane
 }				t_pixel_cal;
+
+typedef	t_roots	(*intersect_fun)(t_vector , t_vector, void*, t_pixel_cal *);
+
+typedef struct	s_fun
+{
+	intersect_fun	inter_f[DIFFERENT_OBJ];
+}				t_fun;
 
 struct	s_rt
 {
 	t_sdl	sdl;
 	t_scene	scene;
 	t_pov	pov;
-
+	t_fun	fun;
 };
 
 //function
 double		str_to_double(char *line);
 int			get_coord_value(char *line, t_vector *vec);
 int			read_hex(char *line);
+t_vector	trim_color(t_vector color);
 
 //math
 float		dot_prod(t_vector v1, t_vector v2);
@@ -162,9 +176,15 @@ float		vect_len(t_vector a);
 t_vector	multi_vect(t_vector a, float multi);
 t_vector	rotate_around_x_y(t_vector a, t_pov	pov);
 t_vector	ft_rotate_camera(t_vector direction, t_pov *pov);
+int			make_unit_vector(t_vector *v);
 
 //sphere roots
-t_roots		sphere_roots(t_vector view_point, t_vector view_port, t_sphere_data *sphere);
+t_roots		sphere_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
+void		sphere_cal(t_pixel_cal *pc, t_sphere_data *data);
+t_roots		plane_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
+void		plane_cal(t_pixel_cal *pc, t_plane_data *data);
+t_roots		cone_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
+t_roots		cylin_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
 
 
 //output
@@ -188,6 +208,7 @@ int			check_line_for_string(int fd, char **str, char *str_mark);
 
 //init
 int			sdl_init(t_sdl *sdl);
+int			config_intersect_function(t_rt *rt);
 
 //render
 void		put_pixel(int x, int y, Uint32 color, SDL_Surface *surr);

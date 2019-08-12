@@ -42,6 +42,7 @@ int			read_hex(char *line)
 int			get_coord_value(char *line, t_vector *vec)
 {
 	char	**split;
+	int		i;
 
 	split = ft_strsplit(line, ',');
 	if (*split == NULL || *(split + 1) == NULL || *(split + 2) == NULL)
@@ -49,6 +50,10 @@ int			get_coord_value(char *line, t_vector *vec)
 	(*vec)[0] = str_to_double(*split);
 	(*vec)[1] = str_to_double(*(split + 1));
 	(*vec)[2] = str_to_double(*(split + 2));
+	i = 0;
+	while(split[i] != 0)
+		free(split[i++]);
+	free(split);
 	return (0);
 }
 
@@ -67,4 +72,15 @@ double		str_to_double(char *line)
 	int_part = ft_atoi(line);
 	float_part = (dot_pos != line_len) ? ft_atoi(line + dot_pos) : 0;
 	return (int_part + (double)float_part / (pow(10, count_num(float_part))));
+}
+
+t_vector	trim_color(t_vector color)
+{
+	if (color[0] > 255)
+		color[0] = 255;
+	if (color[1] > 255)
+		color[1] = 255;
+	if (color[2] > 255)
+		color[2] = 255;
+	return (color);
 }

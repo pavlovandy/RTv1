@@ -12,17 +12,29 @@
 
 #include "../includes/rt.h"
 
-t_roots		sphere_roots(t_vector view_point, t_vector view_port, t_sphere_data *sphere)
+void		sphere_cal(t_pixel_cal *pc, t_sphere_data *data)
+{
+	pc->intersect_point = pc->eye_point + multi_vect(pc->eye_point_dir, pc->closest_dist);
+	pc->normal = pc->intersect_point - data->cent;
+	make_unit_vector(&pc->normal);
+	pc->specular = data->specular;
+	pc->to_eye_dir = -pc->eye_point_dir;
+	pc->color = data->color;
+}
+
+t_roots		sphere_roots(t_vector eye, t_vector eye_dir, void *data, t_pixel_cal *pc)
 {
 	t_vector	vr;
 	float		a;
 	float		b;
 	float		c;
 	float		d;
+	t_sphere_data	*sphere;
 
-	vr = view_point - sphere->cent;
-	a = dot_prod(view_port, view_port);
-	b = 2 * dot_prod(vr, view_port);
+	sphere = (t_sphere_data*)data;
+	vr = eye - sphere->cent;
+	a = dot_prod(eye_dir, eye_dir);
+	b = 2 * dot_prod(vr, eye_dir);
 	c = dot_prod(vr, vr) - sphere->radius * sphere->radius;
 
 	d = b * b - 4 * a * c;
