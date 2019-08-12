@@ -30,6 +30,7 @@
 # define MAX_OBJ_COUNT 10
 # define MAX_LIGHTING_COUNT 10
 # define RGB(v) (((int)v[0] << 16) + ((int)v[1] << 8) + (int)v[2])
+# define DIFFERENT_OBJ 4
 
 # define D	1
 # define VW	(1.4)
@@ -71,7 +72,7 @@ typedef struct	s_sphere_data
 typedef struct	s_plane_data //change this
 {
 	t_vector	normal;
-	float		h;
+	t_vector	dot;
 	t_vector	color;
 	int			specular;
 }				t_plane_data;
@@ -140,12 +141,19 @@ typedef	struct	s_pixel_cal
 	int			t_max;
 }				t_pixel_cal;
 
+typedef	t_roots	(*intersect_fun)(t_vector , t_vector, void*);
+
+typedef struct	s_fun
+{
+	intersect_fun	inter_f[DIFFERENT_OBJ];
+}				t_fun;
+
 struct	s_rt
 {
 	t_sdl	sdl;
 	t_scene	scene;
 	t_pov	pov;
-
+	t_fun	fun;
 };
 
 //function
@@ -159,9 +167,13 @@ float		dot_prod(t_vector v1, t_vector v2);
 t_vector	vector_prod(t_vector v1, t_vector v2);
 float		vect_len(t_vector a);
 t_vector	multi_vect(t_vector a, float multi);
+int			make_unit_vector(t_vector *v);
 
 //sphere roots
-t_roots		sphere_roots(t_vector view_point, t_vector view_port, t_sphere_data *sphere);
+t_roots		sphere_roots(t_vector view_point, t_vector view_port, void *data);
+t_roots		plane_roots(t_vector view_point, t_vector view_port, void *data);
+t_roots		cone_roots(t_vector view_point, t_vector view_port, void *data);
+t_roots		cylin_roots(t_vector view_point, t_vector view_port, void *data);
 
 
 //output
@@ -185,6 +197,7 @@ int			check_line_for_string(int fd, char **str, char *str_mark);
 
 //init
 int			sdl_init(t_sdl *sdl);
+int			config_intersect_function(t_rt *rt);
 
 //render
 void		put_pixel(int x, int y, Uint32 color, SDL_Surface *surr);

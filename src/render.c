@@ -28,7 +28,7 @@ void		check_closest_inter(t_rt *rt, t_pixel_cal *pc)
 	obj_iter = -1;
 	while (++obj_iter < rt->scene.count_obj)
 	{
-		pc->roots = sphere_roots(pc->o, pc->d, rt->scene.obj[obj_iter].data);
+		pc->roots = rt->fun.inter_f[rt->scene.obj[obj_iter].fig_type](pc->o, pc->d, rt->scene.obj[obj_iter].data);
 		if (pc->roots.t1 < pc->closest_dist && pc->roots.t1 > 1)
 		{
 			pc->closest_dist = pc->roots.t1;
@@ -52,12 +52,30 @@ t_vector	ray_trace(t_vector view_point, t_vector view_port, t_rt *rt)
 	check_closest_inter(rt, &pc);
 	if (pc.closest_obj > -1)
 	{
-		pc.p = view_point + multi_vect(view_port, pc.closest_dist);
-		data = rt->scene.obj[pc.closest_obj].data;
-		pc.n = pc.p - data->cent;
-		pc.n = multi_vect(pc.n, (1.0 / vect_len(pc.n)));
-		pc.specular = data->specular;
-		pc.v = -view_port;
+		if (rt->scene.obj[pc.closest_obj].fig_type == SPHERE)
+		{
+			//cal for sphere
+			pc.p = view_point + multi_vect(view_port, pc.closest_dist);
+			data = rt->scene.obj[pc.closest_obj].data;
+			pc.n = pc.p - data->cent;
+			pc.n = multi_vect(pc.n, (1.0 / vect_len(pc.n)));
+			pc.specular = data->specular;
+			pc.v = -view_port;
+		}
+		else if (rt->scene.obj[pc.closest_obj].fig_type == PLANE)
+		{
+			//cal for plane
+			pc.p = view_point + multi_vect(view_port, pc.closest_dist);
+			pc.n = 
+		}
+		else if (rt->scene.obj[pc.closest_obj].fig_type == CONE)
+		{
+			;
+		}
+		else if (rt->scene.obj[pc.closest_obj].fig_type == CYLIN)
+		{
+			;
+		}
 		return (multi_vect(data->color, calculate_lighting(&pc, rt)));
 	}
 	return (BACKGROUND_COLOR);

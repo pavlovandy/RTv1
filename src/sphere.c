@@ -12,14 +12,16 @@
 
 #include "../includes/rt.h"
 
-t_roots		sphere_roots(t_vector view_point, t_vector view_port, t_sphere_data *sphere)
+t_roots		sphere_roots(t_vector view_point, t_vector view_port, void *data)
 {
 	t_vector	vr;
 	float		a;
 	float		b;
 	float		c;
 	float		d;
+	t_sphere_data	*sphere;
 
+	sphere = (t_sphere_data*)data;
 	vr = view_point - sphere->cent;
 	a = dot_prod(view_port, view_port);
 	b = 2 * dot_prod(vr, view_port);

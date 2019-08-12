@@ -39,3 +39,12 @@ Uint32	get_pixel(int x, int y, SDL_Surface *surr)
 	pixels = surr->pixels;
 	return (pixels[y * surr->w + x]);
 }
+
+int		config_intersect_function(t_rt *rt)
+{
+	rt->fun.inter_f[SPHERE] = sphere_roots;
+	rt->fun.inter_f[PLANE] = plane_roots;
+	rt->fun.inter_f[CONE] = cone_roots;
+	rt->fun.inter_f[CYLIN] = cylin_roots;
+	return (0);
+}

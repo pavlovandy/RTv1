@@ -1,33 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   cone.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apavlov <apavlov@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/02 15:44:09 by apavlov           #+#    #+#             */
-/*   Updated: 2019/08/02 15:44:55 by apavlov          ###   ########.fr       */
+/*   Created: 2019/08/12 17:49:53 by apavlov           #+#    #+#             */
+/*   Updated: 2019/08/12 17:49:54 by apavlov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rt.h"
 
-int		main(int argc, char **argv)
+t_roots		cone_roots(t_vector view_point, t_vector view_port, void *cone)
 {
-	t_rt	rt;
-
-	if (argc != 2)
-		return (put_usage());
-	else
-	{
-		if (read_scene(argv[1], &rt))
-			return (1);
-		print_scene_data(&rt.scene);
-		if (sdl_init(&rt.sdl))
-			return (1);
-		if (config_intersect_function(&rt))
-			return (1);
-		there_will_be_loop(&rt);
-	}
-	return (0);
+	return ((t_roots){0, 0});
 }

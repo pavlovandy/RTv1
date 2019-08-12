@@ -39,3 +39,14 @@ t_vector	multi_vect(t_vector a, float multi)
 {
 	return (t_vector){a[0] * multi, a[1] * multi, a[2] * multi};
 }
+
+int			make_unit_vector(t_vector *v)
+{
+	float	v_len;
+
+	v_len = vect_len(*v);
+	if (comp_real(v_len, 0, 0.00001))
+		return (1);
+	*v = multi_vect(*v, v_len);
+	return (0);
+}

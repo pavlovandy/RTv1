@@ -24,7 +24,7 @@ int			check_shadow_inter(t_pixel_cal *pc, t_rt *rt, float min, float max)
 	obj_iter = -1;
 	while (++obj_iter < rt->scene.count_obj)
 	{
-		roots = sphere_roots(pc->p, pc->l, rt->scene.obj[obj_iter].data);
+		roots = rt->fun.inter_f[rt->scene.obj[obj_iter].fig_type](pc->p, pc->l, rt->scene.obj[obj_iter].data);
 		if (roots.t1 < closest_dist && roots.t1 > min)
 		{
 			closest_dist = roots.t1;

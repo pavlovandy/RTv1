@@ -5,10 +5,10 @@ sphere
 	color : {0, 0, 255}
 	specular : {500}
 }
-sphere
+plane
 {
-	cent : {0, -1, 3}
-	radius : {1}
+	normal : {1, 0, 1}
+	dot : {3, 1, 0}
 	color : {255, 0, 0}
 	specular : {500}
 }
