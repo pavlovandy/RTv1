@@ -44,6 +44,7 @@ typedef	struct s_scene	t_scene;
 typedef	struct s_rt		t_rt;
 typedef	struct s_pov	t_pov;
 typedef	float t_vector	__attribute__ ((vector_size(sizeof(float) * 4)));
+
 enum	e_fig
 {
 	SPHERE = 0, PLANE, CONE, CYLIN
@@ -121,19 +122,22 @@ struct	s_scene
 
 typedef	struct	s_pixel_cal
 {
-	t_vector	n;
+	t_vector	n; //normale
 	t_vector	l;
-	t_vector	o;
+	t_vector	o; //viewpoint
 	t_vector	color;
 	t_vector	v;
 	t_vector	p;
 	t_vector	r;
+	t_vector	d; //viewport
 	int			closest_obj;
 	float		closest_dist;
 	t_roots		roots;
 	float		intensity;
 	float		scalar;
 	int			specular;
+	int			t_min;
+	int			t_max;
 }				t_pixel_cal;
 
 struct	s_rt
@@ -148,6 +152,7 @@ struct	s_rt
 double		str_to_double(char *line);
 int			get_coord_value(char *line, t_vector *vec);
 int			read_hex(char *line);
+t_vector	trim_color(t_vector color);
 
 //math
 float		dot_prod(t_vector v1, t_vector v2);

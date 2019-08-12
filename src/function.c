@@ -68,3 +68,14 @@ double		str_to_double(char *line)
 	float_part = (dot_pos != line_len) ? ft_atoi(line + dot_pos) : 0;
 	return (int_part + (double)float_part / (pow(10, count_num(float_part))));
 }
+
+t_vector	trim_color(t_vector color)
+{
+	if (color[0] > 255)
+		color[0] = 255;
+	if (color[1] > 255)
+		color[1] = 255;
+	if (color[2] > 255)
+		color[2] = 255;
+	return (color);
+}

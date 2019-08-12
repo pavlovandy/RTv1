@@ -19,29 +19,37 @@ t_vector	canvas_to_viewport(int x, int y)
 	return ((t_vector){(float)x * VW / WIN_WIDTH, -(float)y * VH / WIN_HEIGHT, (float)D});
 }
 
-t_vector	ray_trace(t_vector view_point, t_vector view_port, t_rt *rt)
+void		check_closest_inter(t_rt *rt, t_pixel_cal *pc)
 {
 	int		obj_iter;
-	t_sphere_data *data;
-	t_pixel_cal		pc;
 
-	pc.closest_dist = BIG_VALUE;
-	pc.closest_obj = -1;
+	pc->closest_dist = BIG_VALUE;
+	pc->closest_obj = -1;
 	obj_iter = -1;
 	while (++obj_iter < rt->scene.count_obj)
 	{
-		pc.roots = sphere_roots(view_point, view_port, rt->scene.obj[obj_iter].data);
-		if (pc.roots.t1 < pc.closest_dist && pc.roots.t1 > 1)
+		pc->roots = sphere_roots(pc->o, pc->d, rt->scene.obj[obj_iter].data);
+		if (pc->roots.t1 < pc->closest_dist && pc->roots.t1 > 1)
 		{
-			pc.closest_dist = pc.roots.t1;
-			pc.closest_obj = obj_iter;
+			pc->closest_dist = pc->roots.t1;
+			pc->closest_obj = obj_iter;
 		}
-		if (pc.roots.t2 < pc.closest_dist && pc.roots.t2 > 1)
+		if (pc->roots.t2 < pc->closest_dist && pc->roots.t2 > 1)
 		{
-			pc.closest_dist = pc.roots.t2;
-			pc.closest_obj = obj_iter;
+			pc->closest_dist = pc->roots.t2;
+			pc->closest_obj = obj_iter;
 		}
 	}
+}
+
+t_vector	ray_trace(t_vector view_point, t_vector view_port, t_rt *rt)
+{
+	t_sphere_data *data;
+	t_pixel_cal		pc;
+
+	pc.o = view_point;
+	pc.d = view_port;
+	check_closest_inter(rt, &pc);
 	if (pc.closest_obj > -1)
 	{
 		pc.p = view_point + multi_vect(view_port, pc.closest_dist);
@@ -70,12 +78,7 @@ void		start_render(t_rt *rt)
 		{
 			d = canvas_to_viewport(x, y);
 			color = ray_trace(rt->pov.coord, d, rt);
-			if (color[0] > 255)
-				color[0] = 255;
-				if (color[1] > 255)
-				color[1] = 255;
-				if (color[2] > 255)
-				color[2] = 255;
+			color = trim_color(color);
 			put_pixel(x + WIN_WIDTH / 2, y + WIN_HEIGHT / 2, RGB(color), rt->sdl.win_sur);
 		}
 	}
