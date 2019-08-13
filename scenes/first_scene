@@ -1,17 +1,9 @@
-cylinder
+cone
 {
-	dot : {0, 0, 10}
-	radius : {2}
+	vertex : {0, 0, 2}
+	tang : {1}
 	dir : {0, 1, 0}
 	color : {255, 0, 0}
-	specular : {100}
-}
-cylinder
-{
-	dot : {0, -1, 0}
-	radius : {1.3}
-	dir : {0, 0, 1}
-	color : {0, 255, 0}
 	specular : {100}
 }
 light

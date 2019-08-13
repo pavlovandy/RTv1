@@ -58,7 +58,7 @@ int		read_cylin_data(int fd, t_cylin_data *data)
 		return (1);
 	printf("ya tut %f\n", vect_len(data->dir));
 	if (make_unit_vector(&data->dir))
-		return (error_message(TRED"Normal vector is 0-vector"TNULL));
+		return (error_message(TRED"Directional vector is 0-vector"TNULL));
 	printf("ya tut %f\n", vect_len(data->dir));
 	if (check_line_for_coord(fd, &data->color, "color : {"))
 		return (1);

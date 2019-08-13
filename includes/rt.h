@@ -81,7 +81,11 @@ typedef struct	s_plane_data //change this
 
 typedef struct	s_cone_data
 {
-
+	t_vector	vertex;
+	t_vector	dir;
+	double		tangent;
+	t_vector	color;
+	int			specular;
 }				t_cone_data;
 
 typedef struct	s_cylin_data
@@ -196,6 +200,7 @@ void		sphere_cal(t_pixel_cal *pc, t_sphere_data *data);
 t_roots		plane_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
 void		plane_cal(t_pixel_cal *pc, t_plane_data *data);
 t_roots		cone_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
+void		cone_cal(t_pixel_cal *pc, t_plane_data *data);
 t_roots		cylin_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
 void		cylin_cal(t_pixel_cal *pc, t_cylin_data	*cylin);
 
@@ -212,6 +217,7 @@ int			read_plane_data(int fd, t_plane_data *data);
 int			read_pov_data(int fd, t_pov *pov);
 int			read_light_data(int fd, t_light *light);
 int			read_cylin_data(int fd, t_cylin_data *data);
+int			read_cone_data(int fd, t_cone_data *data);
 
 int			check_line_for_char(int fd, char c);
 int			check_line_for_coord(int fd, t_vector *coord, char *data_mark);
