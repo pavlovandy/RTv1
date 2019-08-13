@@ -12,11 +12,18 @@
 
 #include "../includes/rt.h"
 
-void		cone_cal(t_pixel_cal *pc, t_cone_data *data)
+void		cone_cal(t_pixel_cal *pc, t_cone_data *cone)
 {
+	double			value;
+
 	pc->intersect_point = pc->eye_point + multi_vect(pc->eye_point_dir, pc->closest_dist);
-	pc->color = data->color;
-	pc->specular = data->specular;
+	pc->color = cone->color;
+	pc->specular = cone->specular;
+	pc->a = dot_prod(pc->eye_point_dir, cone->dir) * \
+							pc->closest_dist + dot_prod(pc->oc, cone->dir);
+	value = cone->tangent * cone->tangent + 1;
+	pc->normal = pc->intersect_point - cone->vertex - multi_vect(cone->dir, pc->a * value);
+	pc->to_eye_dir = -pc->eye_point_dir;
 }
 
 t_roots		cone_roots(t_vector eye, t_vector eye_dir, void *data, t_pixel_cal *pc)
@@ -49,7 +56,6 @@ int		read_cone_data(int fd, t_cone_data *data)
 	if (check_line_for_value(fd, &data->tangent, "angle : {"))
 		return (1);
 	data->tangent = tan(data->tangent / 2 * M_PI / 180);
-	printf("%f\n", data->tangent);
 	if (check_line_for_coord(fd, &data->dir, "dir : {"))
 		return (1);
 	if (make_unit_vector(&data->dir))

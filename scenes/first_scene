@@ -1,7 +1,7 @@
 cone
 {
-	vertex : {0, 1, 5}
-	angle : {30.0}
+	vertex : {1, 1, 5}
+	angle : {60.0}
 	dir : {0, 1, 1}
 	color : {255, 0, 0}
 	specular : {100}
