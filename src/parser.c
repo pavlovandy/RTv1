@@ -50,6 +50,18 @@ int		line_routine(int fd, t_rt *rt, char *line)
 			return (error_message(TRED"Light data error"TNULL));
 		rt->scene.count_light++;
 	}
+	else if (ft_strcmp(line, "cylinder") == 0)
+	{
+		if (rt->scene.count_obj >= 10)
+			return (error_message(TRED"Too much objects"TNULL));
+		rt->scene.obj[rt->scene.count_obj].fig_type = CYLIN;
+		data = &rt->scene.obj[rt->scene.count_obj].data;
+		if (!((*data) = ft_memalloc(sizeof(t_cylin_data))))
+			return (error_message(TRED"Can't allocate memory for obj"TNULL));
+		if (read_cylin_data(fd, rt->scene.obj[rt->scene.count_obj].data))
+			return (error_message(TRED"Cylin data error"TNULL));
+		rt->scene.count_obj++;
+	}
 	else if (ft_strcmp(line, "") == 0)
 		return (0);
 	else

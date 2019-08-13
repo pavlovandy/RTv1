@@ -12,11 +12,11 @@
 
 #include "../includes/rt.h"
 
-#define BACKGROUND_COLOR	(t_vector){255, 255, 255}
+#define BACKGROUND_COLOR	(t_vector){0, 0, 0}
 
 t_vector	canvas_to_viewport(int x, int y)
 {
-	return ((t_vector){(float)x * VW / WIN_WIDTH, -(float)y * VH / WIN_HEIGHT, -(float)D});
+	return ((t_vector){(double)x * VW / WIN_WIDTH, -(double)y * VH / WIN_HEIGHT, (double)D});
 }
 
 void		check_closest_inter(t_rt *rt, t_pixel_cal *pc)
@@ -61,10 +61,8 @@ t_vector	ray_trace(t_vector view_point, t_vector view_port, t_rt *rt)
 			;
 		}
 		else if (rt->scene.obj[pc.closest_obj].fig_type == CYLIN)
-		{
-			;
-		}
-		//return (pc.color);
+			cylin_cal(&pc, rt->scene.obj[pc.closest_obj].data);
+		// return (pc.color);
 		return (multi_vect(pc.color, calculate_lighting(&pc, rt)));
 	}
 	return (BACKGROUND_COLOR);

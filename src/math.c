@@ -14,7 +14,7 @@
 
 //vector math
 
-float		dot_prod(t_vector v1, t_vector v2)
+double		dot_prod(t_vector v1, t_vector v2)
 {
 	return (v1[0] * v2[0] + v1[1] * v2[1] \
 			+ v1[2] * v2[2]);
@@ -30,12 +30,12 @@ t_vector	vector_prod(t_vector v1, t_vector v2)
 	return (res);
 }
 
-float		vect_len(t_vector a)
+double		vect_len(t_vector a)
 {
 	return (sqrt(dot_prod(a, a)));
 }
 
-t_vector	multi_vect(t_vector a, float multi)
+t_vector	multi_vect(t_vector a, double multi)
 {
 	return (t_vector){a[0] * multi, a[1] * multi, a[2] * multi};
 }
@@ -102,11 +102,11 @@ t_vector	ft_rotate_camera(t_vector direction, t_pov *pov) //arudyi version
 }
 int			make_unit_vector(t_vector *v)
 {
-	float	v_len;
+	double	v_len;
 
 	v_len = vect_len(*v);
 	if (comp_real(v_len, 0, 0.00001))
 		return (1);
-	*v = multi_vect(*v, v_len);
+	*v = multi_vect(*v, 1 / v_len);
 	return (0);
 }

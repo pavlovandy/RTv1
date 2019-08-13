@@ -25,8 +25,8 @@
 # include <stdio.h>
 # include "./terminal_colors.h"
 
-# define WIN_WIDTH	1200
-# define WIN_HEIGHT	720
+# define WIN_WIDTH	800
+# define WIN_HEIGHT	600
 # define MAX_OBJ_COUNT 10
 # define MAX_LIGHTING_COUNT 10
 # define RGB(v) (((int)v[0] << 16) + ((int)v[1] << 8) + (int)v[2])
@@ -35,8 +35,8 @@
 # define DIFFERENT_OBJ 4
 
 # define D	1
-# define VW	(1.4)
-# define VH	(0.8)
+# define VW	(1.155)
+# define VH	(VW * WIN_HEIGHT / WIN_WIDTH)
 
 
 # define BIG_VALUE 9e9
@@ -46,7 +46,7 @@ typedef	struct s_sdl	t_sdl;
 typedef	struct s_scene	t_scene;
 typedef	struct s_rt		t_rt;
 typedef	struct s_pov	t_pov;
-typedef	float t_vector	__attribute__ ((vector_size(sizeof(float) * 4)));
+typedef	double t_vector	__attribute__ ((vector_size(sizeof(double) * 4)));
 
 enum	e_fig
 {
@@ -59,14 +59,14 @@ enum	e_light
 
 typedef struct	s_roots
 {
-	float	t1;
-	float	t2;
+	double	t1;
+	double	t2;
 }				t_roots;
 
 typedef struct	s_sphere_data
 {
 	t_vector	cent;
-	float		radius;
+	double		radius;
 	t_vector	color;
 	int			specular;
 }				t_sphere_data;
@@ -86,7 +86,11 @@ typedef struct	s_cone_data
 
 typedef struct	s_cylin_data
 {
-
+	t_vector	dir;
+	t_vector	dot;
+	t_vector	color;
+	double		radius;
+	int			specular;
 }				t_cylin_data;
 
 struct	s_fig
@@ -105,17 +109,17 @@ struct	s_pov
 {
 	t_vector	coord;
 	t_vector	dir;
-	float		cx;
-	float		cy;
-	float		sx;
-	float		sy;
+	double		cx;
+	double		cy;
+	double		sx;
+	double		sy;
 };
 
 typedef struct	s_light
 {
 	char		*type;
 	int			type_num;
-	float		intensity;
+	double		intensity;
 	t_vector	v;
 }				t_light;
 
@@ -138,14 +142,22 @@ typedef	struct	s_pixel_cal
 	t_vector	reflected_ray;
 	t_vector	eye_point_dir; //eye_point
 	int			closest_obj;
-	float		closest_dist;
+	double		closest_dist;
 	t_roots		roots;
-	float		intensity;
-	float		scalar;
+	double		intensity;
+	double		scalar;
 	int			specular;
 	int			t_min;
 	int			t_max;
 	int			sign; //for normal of plane
+
+	double			a;
+	double			b;
+	double			c;
+	double			d;
+	double			dp_x_v;
+	double			dp_d_v;
+	t_vector		oc;
 }				t_pixel_cal;
 
 typedef	t_roots	(*intersect_fun)(t_vector , t_vector, void*, t_pixel_cal *);
@@ -170,10 +182,10 @@ int			read_hex(char *line);
 t_vector	trim_color(t_vector color);
 
 //math
-float		dot_prod(t_vector v1, t_vector v2);
+double		dot_prod(t_vector v1, t_vector v2);
 t_vector	vector_prod(t_vector v1, t_vector v2);
-float		vect_len(t_vector a);
-t_vector	multi_vect(t_vector a, float multi);
+double		vect_len(t_vector a);
+t_vector	multi_vect(t_vector a, double multi);
 t_vector	rotate_around_x_y(t_vector a, t_pov	pov);
 t_vector	ft_rotate_camera(t_vector direction, t_pov *pov);
 int			make_unit_vector(t_vector *v);
@@ -185,6 +197,7 @@ t_roots		plane_roots(t_vector view_point, t_vector view_port, void *data, t_pixe
 void		plane_cal(t_pixel_cal *pc, t_plane_data *data);
 t_roots		cone_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
 t_roots		cylin_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
+void		cylin_cal(t_pixel_cal *pc, t_cylin_data	*cylin);
 
 
 //output
@@ -198,10 +211,11 @@ int			read_sphere_data(int fd, t_sphere_data	*data);
 int			read_plane_data(int fd, t_plane_data *data);
 int			read_pov_data(int fd, t_pov *pov);
 int			read_light_data(int fd, t_light *light);
+int			read_cylin_data(int fd, t_cylin_data *data);
 
 int			check_line_for_char(int fd, char c);
 int			check_line_for_coord(int fd, t_vector *coord, char *data_mark);
-int			check_line_for_value(int fd, float *value, char *value_mark);
+int			check_line_for_value(int fd, double *value, char *value_mark);
 int			check_line_for_int_value(int fd, int *value, char *value_mark);
 int			check_line_for_color(int fd, Uint32 *color);
 int			check_line_for_string(int fd, char **str, char *str_mark);
@@ -215,7 +229,7 @@ void		put_pixel(int x, int y, Uint32 color, SDL_Surface *surr);
 Uint32		get_pixel(int x, int y, SDL_Surface *surr);
 
 void		start_render(t_rt *rt);
-float		calculate_lighting(t_pixel_cal *pc, t_rt *rt);
+double		calculate_lighting(t_pixel_cal *pc, t_rt *rt);
 
 //user events
 int			user_commands(t_rt *rt);

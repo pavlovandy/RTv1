@@ -55,7 +55,7 @@ int		check_line_for_coord(int fd, t_vector *coord, char *data_mark)
 	return (0);
 }
 
-int		check_line_for_value(int fd, float *value, char *value_mark)
+int		check_line_for_value(int fd, double *value, char *value_mark)
 {
 	char	*line;
 	int		i;
@@ -73,7 +73,7 @@ int		check_line_for_value(int fd, float *value, char *value_mark)
 		if (line[ft_strlen(line) - 1] != '}')
 			return (error_message(TRED"Not braced at the end of line"TNULL));
 		line[ft_strlen(line) - 1] = '\0';
-		*value = (float)str_to_double(line + i);
+		*value = (double)str_to_double(line + i);
 	}
 	free(line);
 	return (0);

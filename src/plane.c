@@ -21,20 +21,17 @@ void		plane_cal(t_pixel_cal *pc, t_plane_data *data)
 	pc->to_eye_dir = -pc->eye_point_dir;
 }
 
-t_roots		plane_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc)
+t_roots		plane_roots(t_vector eye, t_vector eye_dir, void *data, t_pixel_cal *pc)
 {
-	float			dp_x_v;
-	float			dp_d_v;
 	t_plane_data	*plane;
 
 	plane = (t_plane_data*)data;
-	
-	dp_d_v = dot_prod(view_port, plane->normal);
-	if (dp_d_v == 0)
+	pc->dp_d_v = dot_prod(eye_dir, plane->normal);
+	if (pc->dp_d_v == 0)
 		return ((t_roots){BIG_VALUE, BIG_VALUE});
-	dp_x_v = dot_prod(view_point - plane->dot, plane->normal);
-	pc->sign = dp_d_v < 0 ? -1 : 1;
-	return ((t_roots){BIG_VALUE, dp_x_v / dp_d_v});
+	pc->dp_x_v = dot_prod(eye - plane->dot, plane->normal);
+	pc->sign = pc->dp_d_v < 0 ? 1 : -1;
+	return ((t_roots){BIG_VALUE, -pc->dp_x_v / pc->dp_d_v});
 }
 
 int			read_plane_data(int fd, t_plane_data *data)
@@ -44,7 +41,7 @@ int			read_plane_data(int fd, t_plane_data *data)
 	if (check_line_for_coord(fd, &data->normal, "normal : {"))
 		return (1);
 	if (make_unit_vector(&data->normal))
-		return (error_message(TRED"Normile vector is 0-vector"TNULL));
+		return (error_message(TRED"Normal vector is 0-vector"TNULL));
 	if (check_line_for_coord(fd, &data->dot, "dot : {"))
 		return (1);
 	if (check_line_for_coord(fd, &data->color, "color : {"))

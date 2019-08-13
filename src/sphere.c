@@ -24,23 +24,19 @@ void		sphere_cal(t_pixel_cal *pc, t_sphere_data *data)
 
 t_roots		sphere_roots(t_vector eye, t_vector eye_dir, void *data, t_pixel_cal *pc)
 {
-	t_vector	vr;
-	float		a;
-	float		b;
-	float		c;
-	float		d;
 	t_sphere_data	*sphere;
 
 	sphere = (t_sphere_data*)data;
-	vr = eye - sphere->cent;
-	a = dot_prod(eye_dir, eye_dir);
-	b = 2 * dot_prod(vr, eye_dir);
-	c = dot_prod(vr, vr) - sphere->radius * sphere->radius;
+	pc->oc = eye - sphere->cent;
+	pc->a = dot_prod(eye_dir, eye_dir);
+	pc->b = dot_prod(pc->oc, eye_dir);
+	pc->c = dot_prod(pc->oc, pc->oc) - sphere->radius * sphere->radius;
 
-	d = b * b - 4 * a * c;
-	if (d < 0)
+	pc->d = pc->b * pc->b -  pc->a * pc->c;
+	if (pc->d < 0)
 		return ((t_roots){BIG_VALUE, BIG_VALUE});
-	return ((t_roots){(-b + sqrt(d)) / (2 * a), (-b - sqrt(d)) / (2 * a)});
+	pc->d = sqrt(pc->d);
+	return ((t_roots){(-pc->b + pc->d) / (pc->a), (-pc->b - pc->d) / (pc->a)});
 }
 
 int		read_sphere_data(int fd, t_sphere_data *data)
