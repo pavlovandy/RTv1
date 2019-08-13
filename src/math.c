@@ -76,7 +76,7 @@ t_vector	rotate_around_x_y(t_vector a, t_pov pov)
 	return (res);
 }
 
-t_vector	ft_rotate_camera(t_vector direction, t_pov *pov) //arudyi version 
+t_vector	ft_rotate_camera(t_vector direction, t_pov *pov)
 {
 	double new_x;
 	double new_y;

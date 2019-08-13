@@ -1,8 +1,8 @@
 cone
 {
-	vertex : {0, 0, 2}
-	tang : {1}
-	dir : {0, 1, 0}
+	vertex : {0, 1, 5}
+	angle : {30.0}
+	dir : {0, 1, 1}
 	color : {255, 0, 0}
 	specular : {100}
 }

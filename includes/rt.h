@@ -200,7 +200,7 @@ void		sphere_cal(t_pixel_cal *pc, t_sphere_data *data);
 t_roots		plane_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
 void		plane_cal(t_pixel_cal *pc, t_plane_data *data);
 t_roots		cone_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
-void		cone_cal(t_pixel_cal *pc, t_plane_data *data);
+void		cone_cal(t_pixel_cal *pc, t_cone_data *data);
 t_roots		cylin_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
 void		cylin_cal(t_pixel_cal *pc, t_cylin_data	*cylin);
 
@@ -225,6 +225,13 @@ int			check_line_for_value(int fd, double *value, char *value_mark);
 int			check_line_for_int_value(int fd, int *value, char *value_mark);
 int			check_line_for_color(int fd, Uint32 *color);
 int			check_line_for_string(int fd, char **str, char *str_mark);
+
+
+int			sphere_routine(int fd, t_rt *rt);
+int			plane_routine(int fd, t_rt *rt);
+int			light_routine(int fd, t_rt *rt);
+int			cylin_routine(int fd, t_rt *rt);
+int			cone_routine(int fd, t_rt *rt);
 
 //init
 int			sdl_init(t_sdl *sdl);

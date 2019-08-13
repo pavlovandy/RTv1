@@ -57,9 +57,7 @@ t_vector	ray_trace(t_vector view_point, t_vector view_port, t_rt *rt)
 		else if (rt->scene.obj[pc.closest_obj].fig_type == PLANE)
 			plane_cal(&pc, rt->scene.obj[pc.closest_obj].data);
 		else if (rt->scene.obj[pc.closest_obj].fig_type == CONE)
-		{
-			;
-		}
+			cone_cal(&pc, rt->scene.obj[pc.closest_obj].data);
 		else if (rt->scene.obj[pc.closest_obj].fig_type == CYLIN)
 			cylin_cal(&pc, rt->scene.obj[pc.closest_obj].data);
 		// return (pc.color);
