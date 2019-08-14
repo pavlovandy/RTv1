@@ -16,7 +16,8 @@
 
 t_vector	canvas_to_viewport(int x, int y)
 {
-	return ((t_vector){(double)x * VW / WIN_WIDTH, -(double)y * VH / WIN_HEIGHT, (double)D});
+	return ((t_vector){(double)x * VW / WIN_WIDTH, \
+								-(double)y * VH / WIN_HEIGHT, (double)D});
 }
 
 void		check_closest_inter(t_rt *rt, t_pixel_cal *pc)
@@ -28,8 +29,8 @@ void		check_closest_inter(t_rt *rt, t_pixel_cal *pc)
 	obj_iter = -1;
 	while (++obj_iter < rt->scene.count_obj)
 	{
-		pc->roots = rt->fun.inter_f[rt->scene.obj[obj_iter].fig_type]\
-			(pc->eye_point, pc->eye_point_dir, rt->scene.obj[obj_iter].data, pc);
+		pc->roots = rt->fun.inter_f[rt->scene.obj[obj_iter].fig_type](\
+		pc->eye_point, pc->eye_point_dir, rt->scene.obj[obj_iter].data, pc);
 		if (pc->roots.t1 < pc->closest_dist && pc->roots.t1 > 1)
 		{
 			pc->closest_dist = pc->roots.t1;
@@ -43,12 +44,12 @@ void		check_closest_inter(t_rt *rt, t_pixel_cal *pc)
 	}
 }
 
-t_vector	ray_trace(t_vector view_point, t_vector view_port, t_rt *rt)
+t_vector	ray_trace(t_vector eye_point, t_vector eye_dir, t_rt *rt)
 {
 	t_pixel_cal		pc;
 
-	pc.eye_point = view_point;
-	pc.eye_point_dir = view_port;
+	pc.eye_point = eye_point;
+	pc.eye_point_dir = eye_dir;
 	check_closest_inter(rt, &pc);
 	if (pc.closest_obj > -1)
 	{
@@ -79,10 +80,12 @@ void		start_render(t_rt *rt)
 		while (++x < WIN_WIDTH / 2)
 		{
 			d = canvas_to_viewport(x, y);
-			//d = ft_rotate_camera(d, &rt->pov);
+			d = ft_rotate_camera(d, &rt->pov);
 			color = ray_trace(rt->pov.coord, d, rt);
 			color = trim_color(color);
-			put_pixel(x + WIN_WIDTH / 2, y + WIN_HEIGHT / 2, RGB(color), rt->sdl.win_sur);
+			put_pixel(x + WIN_WIDTH / 2, y + WIN_HEIGHT / 2, \
+										RGB(color), rt->sdl.win_sur);
 		}
 	}
+	SDL_UpdateWindowSurface(rt->sdl.win);
 }

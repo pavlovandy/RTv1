@@ -14,7 +14,8 @@
 
 void		sphere_cal(t_pixel_cal *pc, t_sphere_data *data)
 {
-	pc->intersect_point = pc->eye_point + multi_vect(pc->eye_point_dir, pc->closest_dist);
+	pc->intersect_point = pc->eye_point + \
+							multi_vect(pc->eye_point_dir, pc->closest_dist);
 	pc->normal = pc->intersect_point - data->cent;
 	make_unit_vector(&pc->normal);
 	pc->specular = data->specular;
@@ -22,7 +23,8 @@ void		sphere_cal(t_pixel_cal *pc, t_sphere_data *data)
 	pc->color = data->color;
 }
 
-t_roots		sphere_roots(t_vector eye, t_vector eye_dir, void *data, t_pixel_cal *pc)
+t_roots		sphere_roots(t_vector eye, t_vector eye_dir, \
+												void *data, t_pixel_cal *pc)
 {
 	t_sphere_data	*sphere;
 
@@ -31,15 +33,14 @@ t_roots		sphere_roots(t_vector eye, t_vector eye_dir, void *data, t_pixel_cal *p
 	pc->a = dot_prod(eye_dir, eye_dir);
 	pc->b = dot_prod(pc->oc, eye_dir);
 	pc->c = dot_prod(pc->oc, pc->oc) - sphere->radius * sphere->radius;
-
-	pc->d = pc->b * pc->b -  pc->a * pc->c;
+	pc->d = pc->b * pc->b - pc->a * pc->c;
 	if (pc->d < 0)
 		return ((t_roots){BIG_VALUE, BIG_VALUE});
 	pc->d = sqrt(pc->d);
 	return ((t_roots){(-pc->b + pc->d) / (pc->a), (-pc->b - pc->d) / (pc->a)});
 }
 
-int		read_sphere_data(int fd, t_sphere_data *data)
+int			read_sphere_data(int fd, t_sphere_data *data)
 {
 	if (check_line_for_char(fd, '{'))
 		return (1);

@@ -12,8 +12,6 @@
 
 #include "../includes/rt.h"
 
-//vector math
-
 double		dot_prod(t_vector v1, t_vector v2)
 {
 	return (v1[0] * v2[0] + v1[1] * v2[1] \
@@ -60,11 +58,14 @@ t_vector	rotate_vector_around_y(t_vector a, t_pov *pov)
 	return (res);
 }
 
-/* matrix_rot_y * matrix_rot_x 
-	cos(y)	sin(y)sin(x)	sin(y)cos(x)
-	0		cos(x)			-sin(x)
-	-sin(y)	cos(y)*sin(x)	cos(y)*cos(x)
- */
+/*
+**
+**	matrix_rot_y * matrix_rot_x
+**	cos(y)	sin(y)sin(x)	sin(y)cos(x)
+**	0		cos(x)			-sin(x)
+**	-sin(y)	cos(y)*sin(x)	cos(y)*cos(x)
+**
+*/
 
 t_vector	rotate_around_x_y(t_vector a, t_pov pov)
 {
@@ -100,6 +101,7 @@ t_vector	ft_rotate_camera(t_vector direction, t_pov *pov)
 	direction[2] = new_z;
 	return (direction);
 }
+
 int			make_unit_vector(t_vector *v)
 {
 	double	v_len;

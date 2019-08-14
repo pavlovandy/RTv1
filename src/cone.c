@@ -16,17 +16,20 @@ void		cone_cal(t_pixel_cal *pc, t_cone_data *cone)
 {
 	double			value;
 
-	pc->intersect_point = pc->eye_point + multi_vect(pc->eye_point_dir, pc->closest_dist);
+	pc->intersect_point = pc->eye_point + \
+							multi_vect(pc->eye_point_dir, pc->closest_dist);
 	pc->color = cone->color;
 	pc->specular = cone->specular;
 	pc->a = dot_prod(pc->eye_point_dir, cone->dir) * \
 							pc->closest_dist + dot_prod(pc->oc, cone->dir);
 	value = cone->tangent * cone->tangent + 1;
-	pc->normal = pc->intersect_point - cone->vertex - multi_vect(cone->dir, pc->a * value);
+	pc->normal = pc->intersect_point - cone->vertex - \
+									multi_vect(cone->dir, pc->a * value);
 	pc->to_eye_dir = -pc->eye_point_dir;
 }
 
-t_roots		cone_roots(t_vector eye, t_vector eye_dir, void *data, t_pixel_cal *pc)
+t_roots		cone_roots(t_vector eye, t_vector eye_dir, \
+											void *data, t_pixel_cal *pc)
 {
 	t_cone_data		*cone;
 	double			value;
@@ -35,7 +38,6 @@ t_roots		cone_roots(t_vector eye, t_vector eye_dir, void *data, t_pixel_cal *pc)
 	pc->oc = eye - cone->vertex;
 	pc->dp_d_v = dot_prod(eye_dir, cone->dir);
 	pc->dp_x_v = dot_prod(pc->oc, cone->dir);
-
 	value = (1 + cone->tangent * cone->tangent);
 	pc->a = dot_prod(eye_dir, eye_dir) - value * pc->dp_d_v * pc->dp_d_v;
 	pc->b = dot_prod(eye_dir, pc->oc) - value * pc->dp_d_v * pc->dp_x_v;
@@ -47,7 +49,7 @@ t_roots		cone_roots(t_vector eye, t_vector eye_dir, void *data, t_pixel_cal *pc)
 	return ((t_roots){(-pc->b - pc->d) / pc->a, (-pc->b + pc->d) / pc->a});
 }
 
-int		read_cone_data(int fd, t_cone_data *data)
+int			read_cone_data(int fd, t_cone_data *data)
 {
 	if (check_line_for_char(fd, '{'))
 		return (1);

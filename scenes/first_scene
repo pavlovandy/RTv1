@@ -8,6 +8,11 @@ cone
 }
 light
 {
+	type : {ambient}
+	intensity : {0.2}
+}
+light
+{
 	type : {point}
 	intensity : {0.6}
 	v : {2, 1, 0}

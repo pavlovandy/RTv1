@@ -1,0 +1,14 @@
+light
+{
+	type : {point}
+	intensity : {0.6}
+	v : {10, 1, 0}
+}
+cylinder
+{
+	dot : {1, 1, 5}
+	radius : {4.0}
+	dir : {0, 1, 0}
+	color : {255, 0, 0}
+	specular : {100}
+}

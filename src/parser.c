@@ -16,7 +16,8 @@ int		line_routine(int fd, t_rt *rt, char *line)
 {
 	if (ft_strcmp(line, "sphere") == 0 && sphere_routine(fd, rt) == 0)
 		return (0);
-	else if (ft_strcmp(line, "point of view") == 0 && read_pov_data(fd, &rt->pov) == 0)
+	else if (ft_strcmp(line, "point of view") == 0 && \
+										read_pov_data(fd, &rt->pov) == 0)
 		return (0);
 	else if (ft_strcmp(line, "plane") == 0 && plane_routine(fd, rt) == 0)
 		return (0);

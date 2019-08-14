@@ -29,7 +29,7 @@ int			read_pov_data(int fd, t_pov *pov)
 		return (1);
 	if (check_line_for_coord(fd, &pov->dir, "angle : {"))
 		return (1);
-	init_cos_sin(pov);	
+	init_cos_sin(pov);
 	if (check_line_for_char(fd, '}'))
 		return (1);
 	return (0);

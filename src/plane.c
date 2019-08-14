@@ -14,14 +14,16 @@
 
 void		plane_cal(t_pixel_cal *pc, t_plane_data *data)
 {
-	pc->intersect_point = pc->eye_point + multi_vect(pc->eye_point_dir, pc->closest_dist);
-	pc->normal = multi_vect(data->normal, pc->sign); // do not need to normalize
+	pc->intersect_point = pc->eye_point + \
+							multi_vect(pc->eye_point_dir, pc->closest_dist);
+	pc->normal = multi_vect(data->normal, pc->sign);
 	pc->specular = data->specular;
 	pc->color = data->color;
 	pc->to_eye_dir = -pc->eye_point_dir;
 }
 
-t_roots		plane_roots(t_vector eye, t_vector eye_dir, void *data, t_pixel_cal *pc)
+t_roots		plane_roots(t_vector eye, t_vector eye_dir, \
+												void *data, t_pixel_cal *pc)
 {
 	t_plane_data	*plane;
 
@@ -56,4 +58,3 @@ int			read_plane_data(int fd, t_plane_data *data)
 		return (1);
 	return (0);
 }
-

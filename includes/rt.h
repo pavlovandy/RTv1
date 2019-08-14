@@ -17,27 +17,27 @@
 # include "../libft/libft.h"
 # include <math.h>
 # include <pthread.h>
-# ifdef	__APPLE__
+# ifdef __APPLE__
 #  include "../frameworks/SDL2.framework/Headers/SDL.h"
 # else
 #  include <SDL2/SDL.h>
 # endif
 # include <stdio.h>
-# include "./terminal_colors.h"
+# include "terminal_colors.h"
 
 # define WIN_WIDTH	800
 # define WIN_HEIGHT	600
 # define MAX_OBJ_COUNT 10
 # define MAX_LIGHTING_COUNT 10
 # define RGB(v) (((int)v[0] << 16) + ((int)v[1] << 8) + (int)v[2])
-# define ROTATION_SPEED 0.01
+# define ROTATION_SPEED 0.1
 # define TRANSLATE_SPEED 0.1
 # define DIFFERENT_OBJ 4
+# define EDITOR 96
 
 # define D	1
 # define VW	(1.155)
 # define VH	(VW * WIN_HEIGHT / WIN_WIDTH)
-
 
 # define BIG_VALUE 9e9
 
@@ -46,7 +46,8 @@ typedef	struct s_sdl	t_sdl;
 typedef	struct s_scene	t_scene;
 typedef	struct s_rt		t_rt;
 typedef	struct s_pov	t_pov;
-typedef	double t_vector	__attribute__ ((vector_size(sizeof(double) * 4)));
+
+typedef	double	t_vector __attribute__((vector_size(sizeof(double)*4)));
 
 enum	e_fig
 {
@@ -71,7 +72,7 @@ typedef struct	s_sphere_data
 	int			specular;
 }				t_sphere_data;
 
-typedef struct	s_plane_data //change this
+typedef struct	s_plane_data
 {
 	t_vector	normal;
 	t_vector	dot;
@@ -137,14 +138,14 @@ struct	s_scene
 
 typedef	struct	s_pixel_cal
 {
-	t_vector	normal; //normale
+	t_vector	normal;
 	t_vector	light_dir;
-	t_vector	eye_point; //viewpoint
+	t_vector	eye_point;
 	t_vector	color;
 	t_vector	to_eye_dir;
 	t_vector	intersect_point;
 	t_vector	reflected_ray;
-	t_vector	eye_point_dir; //eye_point
+	t_vector	eye_point_dir;
 	int			closest_obj;
 	double		closest_dist;
 	t_roots		roots;
@@ -153,18 +154,18 @@ typedef	struct	s_pixel_cal
 	int			specular;
 	int			t_min;
 	int			t_max;
-	int			sign; //for normal of plane
+	int			sign;
 
-	double			a;
-	double			b;
-	double			c;
-	double			d;
-	double			dp_x_v;
-	double			dp_d_v;
-	t_vector		oc;
+	double		a;
+	double		b;
+	double		c;
+	double		d;
+	double		dp_x_v;
+	double		dp_d_v;
+	t_vector	oc;
 }				t_pixel_cal;
 
-typedef	t_roots	(*intersect_fun)(t_vector , t_vector, void*, t_pixel_cal *);
+typedef	t_roots	(*intersect_fun)(t_vector, t_vector, void*, t_pixel_cal *);
 
 typedef struct	s_fun
 {
@@ -177,6 +178,7 @@ struct	s_rt
 	t_scene	scene;
 	t_pov	pov;
 	t_fun	fun;
+	int		editing;
 };
 
 //function
@@ -195,15 +197,18 @@ t_vector	ft_rotate_camera(t_vector direction, t_pov *pov);
 int			make_unit_vector(t_vector *v);
 
 //sphere roots
-t_roots		sphere_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
+t_roots		sphere_roots(t_vector view_point, t_vector view_port, \
+												void *data, t_pixel_cal *pc);
 void		sphere_cal(t_pixel_cal *pc, t_sphere_data *data);
-t_roots		plane_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
+t_roots		plane_roots(t_vector view_point, t_vector view_port, \
+												void *data, t_pixel_cal *pc);
 void		plane_cal(t_pixel_cal *pc, t_plane_data *data);
-t_roots		cone_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
+t_roots		cone_roots(t_vector view_point, t_vector view_port, \
+												void *data, t_pixel_cal *pc);
 void		cone_cal(t_pixel_cal *pc, t_cone_data *data);
-t_roots		cylin_roots(t_vector view_point, t_vector view_port, void *data, t_pixel_cal *pc);
+t_roots		cylin_roots(t_vector view_point, t_vector view_port, \
+												void *data, t_pixel_cal *pc);
 void		cylin_cal(t_pixel_cal *pc, t_cylin_data	*cylin);
-
 
 //output
 int			put_usage(void);
@@ -226,7 +231,6 @@ int			check_line_for_int_value(int fd, int *value, char *value_mark);
 int			check_line_for_color(int fd, Uint32 *color);
 int			check_line_for_string(int fd, char **str, char *str_mark);
 
-
 int			sphere_routine(int fd, t_rt *rt);
 int			plane_routine(int fd, t_rt *rt);
 int			light_routine(int fd, t_rt *rt);
@@ -240,6 +244,7 @@ int			config_intersect_function(t_rt *rt);
 //render
 void		put_pixel(int x, int y, Uint32 color, SDL_Surface *surr);
 Uint32		get_pixel(int x, int y, SDL_Surface *surr);
+t_vector	canvas_to_viewport(int x, int y);
 
 void		start_render(t_rt *rt);
 double		calculate_lighting(t_pixel_cal *pc, t_rt *rt);
@@ -247,5 +252,15 @@ double		calculate_lighting(t_pixel_cal *pc, t_rt *rt);
 //user events
 int			user_commands(t_rt *rt);
 int			there_will_be_loop(t_rt *rt);
+
+//editor
+int			change_scene(t_rt *rt);
+int			change_light(t_light *light, int key);
+int			change_obj(t_fig *fig, int key);
+int			change_sphere(t_sphere_data *sphere, int key);
+int			change_plane(t_plane_data *plane, int key);
+int			change_cylin(t_cylin_data *cylin, int key);
+int			change_cone(t_cone_data *cone, int key);
+void		check_closest_inter(t_rt *rt, t_pixel_cal *pc);
 
 #endif

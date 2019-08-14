@@ -25,7 +25,7 @@ int		put_usage(void)
 	return (1);
 }
 
-void	print_scene_data(t_scene *sc) //delete this
+void	print_scene_data(t_scene *sc)
 {
 	int		i;
 
