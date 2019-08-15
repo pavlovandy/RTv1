@@ -172,6 +172,14 @@ typedef struct	s_fun
 	intersect_fun	inter_f[DIFFERENT_OBJ];
 }				t_fun;
 
+typedef struct	s_use_contact
+{
+	int			change;
+	t_vector	click;
+	SDL_Event	ev;
+}				t_user_contact;
+
+
 struct	s_rt
 {
 	t_sdl	sdl;
@@ -179,6 +187,7 @@ struct	s_rt
 	t_pov	pov;
 	t_fun	fun;
 	int		editing;
+	t_user_contact	uc;
 };
 
 //function

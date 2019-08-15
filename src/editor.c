@@ -58,7 +58,7 @@ int			focus_the_obj(t_rt *rt)
 	//pc.eye_point_dir = ft_rotate_camera(d, &rt->pov);
 	pc.eye_point = rt->pov.coord;
 	check_closest_inter(rt, &pc);
-	return ()
+	return (pc.closest_obj);
 }
 
 int			change_scene(t_rt *rt)

@@ -96,8 +96,8 @@ t_vector	ft_rotate_camera(t_vector direction, t_pov *pov)
 	new_x = direction[0];
 	new_y = direction[1] * cos(angle2) + direction[2] * sin(angle2);
 	new_z = -direction[1] * sin(angle2) + direction[2] * cos(angle2);
-	direction[2] = new_x;
-	direction[2] = new_y;
+	direction[0] = new_x;
+	direction[1] = new_y;
 	direction[2] = new_z;
 	return (direction);
 }

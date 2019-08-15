@@ -4,11 +4,35 @@ light
 	intensity : {0.6}
 	v : {10, 1, 0}
 }
+plane
+{
+	normal : {0, 1, 0}
+	dot : {0, 10, 0}
+	color : {0, 255, 0}
+	specular : {100}
+}
+plane
+{
+	normal : {0, 1, 0}
+	dot : {0, -10, 0}
+	color : {0, 255, 0}
+	specular : {100}
+}
 cylinder
 {
-	dot : {1, 1, 5}
+	dot : {1, 0, 5}
 	radius : {4.0}
 	dir : {0, 1, 0}
-	color : {255, 0, 0}
+	color : {150, 100, 70}
 	specular : {100}
+}
+point of view
+{
+	coord : {1, -10, -30}
+	angle : {1, 1, 1}
+}
+light
+{
+	type : {ambient}
+	intensity : {0.2}
 }

@@ -2,8 +2,22 @@ cone
 {
 	vertex : {1, 1, 5}
 	angle : {60.0}
-	dir : {0, 1, 1}
+	dir : {0, 1, 0}
 	color : {255, 0, 0}
+	specular : {100}
+}
+plane
+{
+	normal : {0, 1, 0}
+	dot : {0, 10, 0}
+	color : {0, 255, 0}
+	specular : {100}
+}
+plane
+{
+	normal : {0, 1, 0}
+	dot : {0, -10, 0}
+	color : {0, 255, 0}
 	specular : {100}
 }
 light
