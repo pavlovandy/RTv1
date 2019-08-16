@@ -74,26 +74,11 @@ double		str_to_double(char *line)
 	return (int_part + (double)float_part / (pow(10, count_num(float_part))));
 }
 
-t_vector	make_8_bit(t_vector color)
-{
-	t_vector	new_color;
-	new_color[0] = (int)color[0] / (1 << 4) * (1 << 4) + color[0] / (1 << 2);
-	new_color[1] = (int)color[1] / (1 << 4) * (1 << 4) + color[1] / (1 << 2);
-	new_color[2] = (int)color[2] / (1 << 4) * (1 << 4) + color[1] / (1 << 2);
-
-	return (new_color);
-}
-
 t_vector	trim_color(t_vector color)
 {
-	//color = make_8_bit(color);
-
-	if (color[0] > 255)
-		color[0] = 255;
-	if (color[1] > 255)
-		color[1] = 255;
-	if (color[2] > 255)
-		color[2] = 255;
+	color[0] = CLAMP(color[0], 0, 255);
+	color[1] = CLAMP(color[1], 0, 255);
+	color[2] = CLAMP(color[2], 0, 255);
 	return (color);
 }
 

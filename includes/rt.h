@@ -30,8 +30,11 @@
 # define MAX_OBJ_COUNT 10
 # define MAX_LIGHTING_COUNT 10
 # define RGB(v) (((int)v[0] << 16) + ((int)v[1] << 8) + (int)v[2])
+# define MIN(a,b)				(((a) < (b)) ? (a) : (b))
+# define MAX(a,b)				(((a) > (b)) ? (a) : (b))
+# define CLAMP(a, mi,ma)		MIN(MAX(a,mi),ma)
 # define ROTATION_SPEED 0.1
-# define TRANSLATE_SPEED 0.1
+# define TRANSLATE_SPEED 0.6
 # define DIFFERENT_OBJ 4
 # define EDITOR 96
 
@@ -172,10 +175,11 @@ typedef struct	s_fun
 	intersect_fun	inter_f[DIFFERENT_OBJ];
 }				t_fun;
 
-typedef struct	s_use_contact
+typedef struct	s_user_contact
 {
 	int			change;
 	t_vector	click;
+	int			rotation;
 	SDL_Event	ev;
 }				t_user_contact;
 
@@ -198,10 +202,8 @@ t_vector	trim_color(t_vector color);
 
 //math
 double		dot_prod(t_vector v1, t_vector v2);
-t_vector	vector_prod(t_vector v1, t_vector v2);
 double		vect_len(t_vector a);
 t_vector	multi_vect(t_vector a, double multi);
-t_vector	rotate_around_x_y(t_vector a, t_pov	pov);
 t_vector	ft_rotate_camera(t_vector direction, t_pov *pov);
 int			make_unit_vector(t_vector *v);
 
@@ -266,10 +268,11 @@ int			there_will_be_loop(t_rt *rt);
 int			change_scene(t_rt *rt);
 int			change_light(t_light *light, int key);
 int			change_obj(t_fig *fig, int key);
-int			change_sphere(t_sphere_data *sphere, int key);
-int			change_plane(t_plane_data *plane, int key);
-int			change_cylin(t_cylin_data *cylin, int key);
-int			change_cone(t_cone_data *cone, int key);
+int			change_sphere(t_sphere_data *sphere, int key, const Uint8 *keystate);
+int			change_plane(t_plane_data *plane, int key, const Uint8 *keystate);
+int			change_cylin(t_cylin_data *cylin, int key, const Uint8 *keystate);
+int			change_cone(t_cone_data *cone, int key, const Uint8 *keystate);
 void		check_closest_inter(t_rt *rt, t_pixel_cal *pc);
+int			change_color_and_specular(t_vector *color, int *specular, int key, const Uint8 *keystate);
 
 #endif

@@ -33,6 +33,12 @@ light
 }
 light
 {
+	type : {point}
+	intensity : {0.6}
+	v : {-5, 1, 5}
+}
+light
+{
 	type : {direct}
 	intensity : {0.2}
 	v : {1, 4, 4}

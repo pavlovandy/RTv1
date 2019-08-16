@@ -1,0 +1,23 @@
+plane
+{
+	normal : {0, 1, 0}
+	dot : {0, 100, 0}
+	color : {0, 255, 0}
+	specular : {100}
+}
+light
+{
+	type : {ambient}
+	intensity : {0.2}
+}
+light
+{
+	type : {point}
+	intensity : {0.6}
+	v : {0, 0, 0}
+}
+point of view
+{
+	coord : {0, 0, 0}
+	angle : {0, 0, 0}
+}

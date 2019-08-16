@@ -16,7 +16,10 @@ void		plane_cal(t_pixel_cal *pc, t_plane_data *data)
 {
 	pc->intersect_point = pc->eye_point + \
 							multi_vect(pc->eye_point_dir, pc->closest_dist);
-	pc->normal = multi_vect(data->normal, pc->sign);
+	if (pc->sign > 0)
+		pc->normal = data->normal;
+	else
+		pc->normal = -data->normal;
 	pc->specular = data->specular;
 	pc->color = data->color;
 	pc->to_eye_dir = -pc->eye_point_dir;
@@ -29,10 +32,9 @@ t_roots		plane_roots(t_vector eye, t_vector eye_dir, \
 
 	plane = (t_plane_data*)data;
 	pc->dp_d_v = dot_prod(eye_dir, plane->normal);
-	if (pc->dp_d_v == 0)
+	if (comp_real(pc->dp_d_v, 0, 0.00001))
 		return ((t_roots){BIG_VALUE, BIG_VALUE});
 	pc->dp_x_v = dot_prod(eye - plane->dot, plane->normal);
-	pc->sign = pc->dp_d_v < 0 ? 1 : -1;
 	return ((t_roots){BIG_VALUE, -pc->dp_x_v / pc->dp_d_v});
 }
 

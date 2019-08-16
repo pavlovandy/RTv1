@@ -59,10 +59,8 @@ int			read_cylin_data(int fd, t_cylin_data *data)
 		return (error_message(TRED"Negative radius of cylin detected"TNULL));
 	if (check_line_for_coord(fd, &data->dir, "dir : {"))
 		return (1);
-	printf("ya tut %f\n", vect_len(data->dir));
 	if (make_unit_vector(&data->dir))
 		return (error_message(TRED"Directional vector is 0-vector"TNULL));
-	printf("ya tut %f\n", vect_len(data->dir));
 	if (check_line_for_coord(fd, &data->color, "color : {"))
 		return (1);
 	if (data->color[0] > 255 || data->color[1] > 255 || data->color[2] > 255)
