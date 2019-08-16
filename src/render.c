@@ -32,14 +32,14 @@ void		check_closest_inter(t_rt *rt, t_pixel_cal *pc)
 	{
 		roots = rt->fun.inter_f[rt->scene.obj[obj_iter].fig_type](\
 		pc->eye_point, pc->eye_point_dir, rt->scene.obj[obj_iter].data, pc);
-		if (roots.t1 < pc->closest_dist && roots.t1 > 1)
+		if (roots.t1 < pc->closest_dist && roots.t1 > 0.1)
 		{
 			pc->closest_dist = roots.t1;
 			pc->closest_obj = obj_iter;
 			if (rt->scene.obj[obj_iter].fig_type == PLANE)
 				pc->sign = pc->dp_d_v < 0 ? 1 : -1;
 		}
-		if (roots.t2 < pc->closest_dist && roots.t2 > 1)
+		if (roots.t2 < pc->closest_dist && roots.t2 > 0.1)
 		{
 			pc->closest_dist = roots.t2;
 			pc->closest_obj = obj_iter;

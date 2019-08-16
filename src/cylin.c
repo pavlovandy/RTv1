@@ -19,7 +19,7 @@ void		cylin_cal(t_pixel_cal *pc, t_cylin_data *cylin)
 	pc->intersect_point = pc->eye_point + \
 						multi_vect(pc->eye_point_dir, pc->closest_dist);
 	m = dot_prod(pc->eye_point_dir, cylin->dir) * \
-						pc->closest_dist + dot_prod(pc->oc, cylin->dir);
+						pc->closest_dist + dot_prod(pc->eye_point - cylin->dot, cylin->dir);
 	pc->color = cylin->color;
 	pc->normal = pc->intersect_point - cylin->dot - multi_vect(cylin->dir, m);
 	make_unit_vector(&pc->normal);

@@ -14,7 +14,7 @@ CC = gcc
 
 NAME = libft.a
 
-FLAGS = -O3 -Wall -Wextra #-Werror
+FLAGS = -O3 -flto -Ofast -pipe -Wall -Wextra #-Werror
 
 OBJ_DIR = ./obj/
 

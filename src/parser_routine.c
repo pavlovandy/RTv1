@@ -16,7 +16,7 @@ int		sphere_routine(int fd, t_rt *rt)
 {
 	t_sphere_data	**data;
 
-	if (rt->scene.count_obj >= 10)
+	if (rt->scene.count_obj >= MAX_OBJ_COUNT)
 		return (error_message(TRED"Too much objects"TNULL));
 	rt->scene.obj[rt->scene.count_obj].fig_type = SPHERE;
 	data = (t_sphere_data**)&rt->scene.obj[rt->scene.count_obj].data;
@@ -32,7 +32,7 @@ int		plane_routine(int fd, t_rt *rt)
 {
 	t_plane_data	**data;
 
-	if (rt->scene.count_obj >= 10)
+	if (rt->scene.count_obj >= MAX_OBJ_COUNT)
 		return (error_message(TRED"Too much objects"TNULL));
 	rt->scene.obj[rt->scene.count_obj].fig_type = PLANE;
 	data = (t_plane_data**)&rt->scene.obj[rt->scene.count_obj].data;
@@ -46,7 +46,7 @@ int		plane_routine(int fd, t_rt *rt)
 
 int		light_routine(int fd, t_rt *rt)
 {
-	if (rt->scene.count_light >= 10)
+	if (rt->scene.count_light >= MAX_LIGHTING_COUNT)
 		return (error_message(TRED"Too much lighting"TNULL));
 	if (read_light_data(fd, rt->scene.light + rt->scene.count_light))
 		return (error_message(TRED"Light data error"TNULL));
@@ -58,7 +58,7 @@ int		cylin_routine(int fd, t_rt *rt)
 {
 	t_cylin_data	**data;
 
-	if (rt->scene.count_obj >= 10)
+	if (rt->scene.count_obj >= MAX_OBJ_COUNT)
 		return (error_message(TRED"Too much objects"TNULL));
 	rt->scene.obj[rt->scene.count_obj].fig_type = CYLIN;
 	data = (t_cylin_data**)&rt->scene.obj[rt->scene.count_obj].data;
@@ -74,7 +74,7 @@ int		cone_routine(int fd, t_rt *rt)
 {
 	t_cone_data		**data;
 
-	if (rt->scene.count_obj >= 10)
+	if (rt->scene.count_obj >= MAX_OBJ_COUNT)
 		return (error_message(TRED"Too much objects"TNULL));
 	rt->scene.obj[rt->scene.count_obj].fig_type = CONE;
 	data = (t_cone_data**)&rt->scene.obj[rt->scene.count_obj].data;

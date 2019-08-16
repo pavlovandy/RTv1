@@ -21,7 +21,7 @@ void		cone_cal(t_pixel_cal *pc, t_cone_data *cone)
 	pc->color = cone->color;
 	pc->specular = cone->specular;
 	pc->a = dot_prod(pc->eye_point_dir, cone->dir) * \
-							pc->closest_dist + dot_prod(pc->oc, cone->dir);
+							pc->closest_dist + dot_prod(pc->eye_point - cone->vertex, cone->dir);
 	value = cone->tangent * cone->tangent + 1;
 	pc->normal = pc->intersect_point - cone->vertex - \
 									multi_vect(cone->dir, pc->a * value);

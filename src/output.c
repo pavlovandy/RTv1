@@ -28,18 +28,53 @@ int		put_usage(void)
 void	print_scene_data(t_scene *sc)
 {
 	int		i;
+	t_sphere_data	*sphere;
+	t_plane_data	*plane;
+	t_cylin_data	*cylin;
+	t_cone_data		*cone;
 
 	i = -1;
+	printf("__________________________\n");
 	while (++i < sc->count_obj)
 	{
 		if (sc->obj[i].fig_type == SPHERE)
-			ft_putstr(TCYN"There is a sphere\n"TNULL);
+		{
+			sphere = sc->obj[i].data;
+			printf("sphere\n");
+			printf("\tcent : {%f, %f, %f}\n", sphere->cent[0], sphere->cent[1], sphere->cent[2]);
+			printf("\tradius : {%f}\n", sphere->radius);
+			printf("\tcolor : {%f, %f, %f}\n", sphere->color[0], sphere->color[1], sphere->color[2]);
+			printf("\tspecular : {%i}\n", sphere->specular);
+		}
 		else if (sc->obj[i].fig_type == PLANE)
-			ft_putstr(TCYN"There is a plane\n"TNULL);
+		{
+			plane = sc->obj[i].data;
+			printf("plane\n");
+			printf("\tnormal : {%f, %f, %f}\n", plane->normal[0], plane->normal[1], plane->normal[2]);
+			printf("\tdot : {%f, %f, %f}\n", plane->dot[0], plane->dot[1], plane->dot[2]);
+			printf("\tcolor : {%f, %f, %f}\n", plane->color[0], plane->color[1], plane->color[2]);
+			printf("\tspecular : {%i}\n", plane->specular);
+		}
 		else if (sc->obj[i].fig_type == CONE)
-			ft_putstr(TCYN"There is a cone\n"TNULL);
+		{
+			cone = sc->obj[i].data;
+			printf("cone\n");
+			printf("\tvertex : {%f, %f, %f}\n", cone->vertex[0], cone->vertex[1], cone->vertex[2]);
+			printf("\tangle : {%f}\n", atan(cone->tangent) * 360 / M_PI);
+			printf("\tdir : {%f, %f, %f}\n", cone->dir[0], cone->dir[1], cone->dir[2]);
+			printf("\tcolor : {%f, %f, %f}\n", cone->color[0], cone->color[1], cone->color[2]);
+			printf("\tspecular : {%i}\n", cone->specular);
+		}
 		else if (sc->obj[i].fig_type == CYLIN)
-			ft_putstr(TCYN"There is a cylinder\n"TNULL);
+		{
+			cylin = sc->obj[i].data;
+			printf("cylinder\n");
+			printf("\tdot : {%f, %f, %f}\n", cylin->dot[0], cylin->dot[1], cylin->dot[2]);
+			printf("\tradius : {%f}\n", cylin->radius);
+			printf("\tdir : {%f, %f, %f}\n", cylin->dir[0], cylin->dir[1], cylin->dir[2]);
+			printf("\tcolor : {%f, %f, %f}\n", cylin->color[0], cylin->color[1], cylin->color[2]);
+			printf("\tspecular : {%i}\n", cylin->specular);
+		}
 		else
 			ft_putstr(TRED"What the hell is it\n"TNULL);
 	}

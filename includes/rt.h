@@ -27,7 +27,7 @@
 
 # define WIN_WIDTH	800
 # define WIN_HEIGHT	600
-# define MAX_OBJ_COUNT 10
+# define MAX_OBJ_COUNT 20
 # define MAX_LIGHTING_COUNT 10
 # define RGB(v) (((int)v[0] << 16) + ((int)v[1] << 8) + (int)v[2])
 # define MIN(a,b)				(((a) < (b)) ? (a) : (b))
@@ -38,8 +38,8 @@
 # define DIFFERENT_OBJ 4
 # define EDITOR 96
 
-# define D	1
-# define VW	(1.155)
+# define D	0.1
+# define VW	(1.155 * D)
 # define VH	(VW * WIN_HEIGHT / WIN_WIDTH)
 
 # define BIG_VALUE 9e9

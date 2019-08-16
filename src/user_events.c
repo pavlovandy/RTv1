@@ -94,6 +94,8 @@ int			user_commands(t_rt *rt)
 				SDL_SetRelativeMouseMode(rt->uc.rotation);
 				SDL_GetRelativeMouseState(NULL, NULL);
 			}
+			else if (rt->uc.ev.key.keysym.sym == SDLK_BACKSPACE)
+				print_scene_data(&rt->scene);
 		}
 	}
 	return (rt->uc.change);
