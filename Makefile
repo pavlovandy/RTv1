@@ -35,19 +35,19 @@ FT = ./libft/
 
 FT_LIB	= $(addprefix $(FT),libft.a)
 
-LINKS = -L$(FT) -l ft -lm
+LINKS = -L$(FT) -l ft -lm -lSDL2
 
 SDL_PATH = ./framework
 
 INCLUDES = 		-I$(FT) -I$(INC_DIR) \
-				-I./frameworks/SDL2.framework/Headers \
-				-I./frameworks/SDL2_image.framework/Headers \
-				-F./frameworks
+# 				-I./frameworks/SDL2.framework/Headers \
+# 				-I./frameworks/SDL2_image.framework/Headers \
+# 				-F./frameworks
 
-FRAMEWORKS = 	-F./frameworks \
-				-rpath ./frameworks \
-				-framework AppKit -framework OpenGL \
-				-framework SDL2 -framework SDL2_image \
+# FRAMEWORKS = 	-F./frameworks \
+# 				-rpath ./frameworks \
+# 				-framework AppKit -framework OpenGL \
+# 				-framework SDL2 -framework SDL2_image \
 
 all: obj_dir $(FT_LIB) $(NAME)
 	echo 'Compilated!'
@@ -56,7 +56,7 @@ obj_dir:
 	mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJ)
-	$(CC) $(FLAGS) $(FRAMEWORKS) $(OBJ) $(LINKS) -o $(NAME)
+	$(CC) $(FLAGS) $(FRAMEWORKS) $(OBJ) -o $(NAME) $(LINKS)
 
 $(OBJ_DIR)%.o:$(SRC_DIR)%.c $(INC)
 	$(CC) $(FLAGS) $(INCLUDES) -o $@ -c $<
