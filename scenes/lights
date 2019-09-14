@@ -1,6 +1,24 @@
+sphere
+{
+	cent : {0, 0, 5}
+	radius : {1}
+	color : {255, 0, 0}
+	specular : {3}
+}
+point of view
+{
+	coord : {0, 0, 0}
+	angle : {0, 0, 0}
+}
 light
 {
-	type : {dot}
-	intensity : {0.2}
-	v : {1, 2, 3}
+	type : {direct}
+	intensity : {0.6}
+	v : {0, 0, -1}
+}
+light
+{
+	type : {direct}
+	intensity : {0.4}
+	v : {1, 5, -1}
 }

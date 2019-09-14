@@ -2,14 +2,14 @@ plane
 {
 	normal : {0, 1, 0}
 	dot : {0, -20, 0}
-	color : {0, 255, 0}
+	color : {155, 155, 0}
 	specular : {100}
 }
 plane
 {
 	normal : {0, 1, 0}
 	dot : {0, 20, 0}
-	color : {0, 255, 0}
+	color : {155, 155, 155}
 	specular : {100}
 }
 plane
@@ -23,21 +23,21 @@ plane
 {
 	normal : {1, 0, 0}
 	dot : {-20, 0, 0}
-	color : {0, 255, 0}
+	color : {0, 255, 155}
 	specular : {100}
 }
 plane
 {
 	normal : {0, 0, 1}
 	dot : {0, 0, 20}
-	color : {0, 255, 0}
+	color : {100, 255, 100}
 	specular : {100}
 }
 plane
 {
 	normal : {0, 0, 1}
 	dot : {0, 0, -20}
-	color : {0, 255, 0}
+	color : {200, 100, 0}
 	specular : {100}
 }
 sphere
@@ -59,25 +59,9 @@ cylinder
 {
 	dot : {1, 0, 5}
 	radius : {4.0}
-	dir : {0, 1, 0}
-	color : {150, 100, 70}
-	specular : {100}
-}
-cylinder
-{
-	dot : {1, 0, 5}
-	radius : {4.0}
-	dir : {0, 1, 0}
-	color : {150, 100, 70}
-	specular : {100}
-}
-cylinder
-{
-	dot : {1, 0, 5}
-	radius : {4.0}
-	dir : {0, 1, 0}
-	color : {150, 100, 70}
-	specular : {100}
+	dir : {5, 1, 5}
+	color : {150, 100, 200}
+	specular : {-1}
 }
 light
 {
@@ -88,7 +72,7 @@ light
 {
 	type : {point}
 	intensity : {0.6}
-	v : {0, 0, 0}
+	v : {7, 0, 0}
 }
 point of view
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavlov <apavlov@student.unit.ua>          +#+  +:+       +#+        */
+/*   By: apavlov <apavlov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:44:09 by apavlov           #+#    #+#             */
-/*   Updated: 2019/08/02 15:44:55 by apavlov          ###   ########.fr       */
+/*   Updated: 2019/09/14 13:21:08 by apavlov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int		main(int argc, char **argv)
 	{
 		if (read_scene(argv[1], &rt))
 			return (1);
-		print_scene_data(&rt.scene);
 		if (sdl_init(&rt.sdl))
 			return (1);
 		if (config_intersect_function(&rt))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavlov <apavlov@student.unit.ua>          +#+  +:+       +#+        */
+/*   By: apavlov <apavlov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/05 14:32:35 by apavlov           #+#    #+#             */
-/*   Updated: 2019/08/05 14:32:35 by apavlov          ###   ########.fr       */
+/*   Updated: 2019/09/14 12:58:54 by apavlov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_roots		sphere_roots(t_vector eye, t_vector eye_dir, \
 	pc->c = dot_prod(pc->oc, pc->oc) - sphere->radius * sphere->radius;
 	pc->d = pc->b * pc->b - pc->a * pc->c;
 	if (pc->d < 0)
-		return ((t_roots){BIG_VALUE, BIG_VALUE});
+		return ((t_roots){BIG_VALUE + 1, BIG_VALUE + 1});
 	pc->d = sqrt(pc->d);
 	return ((t_roots){(-pc->b + pc->d) / (pc->a), (-pc->b - pc->d) / (pc->a)});
 }
@@ -58,6 +58,8 @@ int			read_sphere_data(int fd, t_sphere_data *data)
 		return (error_message(TRED"Bad color values"TNULL));
 	if (check_line_for_int_value(fd, &data->specular, "specular : {"))
 		return (1);
+	if (data->specular < -1 || data->specular > 1000)
+		return (error_message(TRED"Bad specular values"TNULL));
 	if (check_line_for_char(fd, '}'))
 		return (1);
 	return (0);

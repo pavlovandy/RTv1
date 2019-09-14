@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylin.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavlov <apavlov@student.unit.ua>          +#+  +:+       +#+        */
+/*   By: apavlov <apavlov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/12 17:49:46 by apavlov           #+#    #+#             */
-/*   Updated: 2019/08/12 17:49:47 by apavlov          ###   ########.fr       */
+/*   Updated: 2019/09/14 13:27:03 by apavlov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void		cylin_cal(t_pixel_cal *pc, t_cylin_data *cylin)
 	pc->intersect_point = pc->eye_point + \
 						multi_vect(pc->eye_point_dir, pc->closest_dist);
 	m = dot_prod(pc->eye_point_dir, cylin->dir) * \
-						pc->closest_dist + dot_prod(pc->eye_point - cylin->dot, cylin->dir);
+		pc->closest_dist + dot_prod(pc->eye_point - cylin->dot, cylin->dir);
 	pc->color = cylin->color;
 	pc->normal = pc->intersect_point - cylin->dot - multi_vect(cylin->dir, m);
 	make_unit_vector(&pc->normal);
@@ -69,6 +69,8 @@ int			read_cylin_data(int fd, t_cylin_data *data)
 		return (error_message(TRED"Bad color values"TNULL));
 	if (check_line_for_int_value(fd, &data->specular, "specular : {"))
 		return (1);
+	if (data->specular < -1 || data->specular > 1000)
+		return (error_message(TRED"Bad specular values"TNULL));
 	if (check_line_for_char(fd, '}'))
 		return (1);
 	return (0);

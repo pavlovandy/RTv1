@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavlov <apavlov@student.unit.ua>          +#+  +:+       +#+        */
+/*   By: apavlov <apavlov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/05 14:32:40 by apavlov           #+#    #+#             */
-/*   Updated: 2019/08/05 14:32:40 by apavlov          ###   ########.fr       */
+/*   Updated: 2019/09/14 12:59:13 by apavlov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ t_roots		plane_roots(t_vector eye, t_vector eye_dir, \
 
 	plane = (t_plane_data*)data;
 	pc->dp_d_v = dot_prod(eye_dir, plane->normal);
-	if (comp_real(pc->dp_d_v, 0, 0.00001))
-		return ((t_roots){BIG_VALUE, BIG_VALUE});
+	if (comp_real(pc->dp_d_v, 0, 0.000000001))
+		return ((t_roots){BIG_VALUE + 1, BIG_VALUE + 1});
 	pc->dp_x_v = dot_prod(eye - plane->dot, plane->normal);
-	return ((t_roots){BIG_VALUE, -pc->dp_x_v / pc->dp_d_v});
+	return ((t_roots){BIG_VALUE + 1, -pc->dp_x_v / pc->dp_d_v});
 }
 
 int			read_plane_data(int fd, t_plane_data *data)
@@ -56,6 +56,8 @@ int			read_plane_data(int fd, t_plane_data *data)
 		return (error_message(TRED"Bad color values"TNULL));
 	if (check_line_for_int_value(fd, &data->specular, "specular : {"))
 		return (1);
+	if (data->specular < -1 || data->specular > 1000)
+		return (error_message(TRED"Bad specular values"TNULL));
 	if (check_line_for_char(fd, '}'))
 		return (1);
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavlov <apavlov@student.unit.ua>          +#+  +:+       +#+        */
+/*   By: apavlov <apavlov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 15:43:37 by apavlov           #+#    #+#             */
-/*   Updated: 2019/08/02 15:43:38 by apavlov          ###   ########.fr       */
+/*   Updated: 2019/09/14 14:07:03 by apavlov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,76 +44,85 @@
 
 # define BIG_VALUE 9e9
 
-typedef	struct s_fig	t_fig;
-typedef	struct s_sdl	t_sdl;
-typedef	struct s_scene	t_scene;
-typedef	struct s_rt		t_rt;
-typedef	struct s_pov	t_pov;
-
+typedef	struct s_fig			t_fig;
+typedef	struct s_sdl			t_sdl;
+typedef	struct s_scene			t_scene;
+typedef	struct s_rt				t_rt;
+typedef	struct s_pov			t_pov;
+typedef	struct s_sphere_data	t_sphere_data;
+typedef	struct s_roots			t_roots;
+typedef	struct s_plane_data		t_plane_data;
+typedef	struct s_cone_data		t_cone_data;
+typedef	struct s_cylin_data		t_cylin_data;
+typedef	struct s_light			t_light;
+typedef	struct s_pixel_cal		t_pixel_cal;
+typedef	struct s_fun			t_fun;
 typedef	double	t_vector __attribute__((vector_size(sizeof(double)*4)));
+typedef	struct s_user_contact	t_user_contact;
+typedef	t_roots	(*t_intersect_fun)(t_vector, t_vector, void *, t_pixel_cal *);
 
-enum	e_fig
+enum			e_fig
 {
 	SPHERE = 0, PLANE, CONE, CYLIN
 };
-enum	e_light
+enum			e_light
 {
 	AMBIENT = 0, DIRECT, POINT
 };
 
-typedef struct	s_roots
+struct			s_roots
 {
-	double	t1;
-	double	t2;
-}				t_roots;
+	double		t1;
+	double		t2;
+};
 
-typedef struct	s_sphere_data
+struct			s_sphere_data
 {
 	t_vector	cent;
 	double		radius;
 	t_vector	color;
 	int			specular;
-}				t_sphere_data;
+};
 
-typedef struct	s_plane_data
+struct			s_plane_data
 {
 	t_vector	normal;
 	t_vector	dot;
 	t_vector	color;
 	int			specular;
-}				t_plane_data;
+};
 
-typedef struct	s_cone_data
+struct			s_cone_data
 {
 	t_vector	vertex;
 	t_vector	dir;
 	double		tangent;
 	t_vector	color;
 	int			specular;
-}				t_cone_data;
+};
 
-typedef struct	s_cylin_data
+struct			s_cylin_data
 {
 	t_vector	dir;
 	t_vector	dot;
 	t_vector	color;
 	double		radius;
 	int			specular;
-}				t_cylin_data;
-
-struct	s_fig
-{
-	int		fig_type;
-	void	*data;
 };
 
-struct	s_sdl
+struct			s_fig
+{
+	int			fig_type;
+	void		*data;
+};
+
+struct			s_sdl
 {
 	SDL_Window	*win;
 	SDL_Surface	*win_sur;
 };
 
-struct	s_pov
+struct			s_pov
 {
 	t_vector	coord;
 	t_vector	dir;
@@ -123,15 +132,15 @@ struct	s_pov
 	double		sy;
 };
 
-typedef struct	s_light
+struct			s_light
 {
 	char		*type;
 	int			type_num;
 	double		intensity;
 	t_vector	v;
-}				t_light;
+};
 
-struct	s_scene
+struct			s_scene
 {
 	int			count_obj;
 	t_fig		obj[MAX_OBJ_COUNT];
@@ -139,7 +148,7 @@ struct	s_scene
 	t_light		light[MAX_LIGHTING_COUNT];
 };
 
-typedef	struct	s_pixel_cal
+struct			s_pixel_cal
 {
 	t_vector	normal;
 	t_vector	light_dir;
@@ -158,7 +167,6 @@ typedef	struct	s_pixel_cal
 	int			t_min;
 	int			t_max;
 	int			sign;
-
 	double		a;
 	double		b;
 	double		c;
@@ -166,113 +174,105 @@ typedef	struct	s_pixel_cal
 	double		dp_x_v;
 	double		dp_d_v;
 	t_vector	oc;
-}				t_pixel_cal;
+};
 
-typedef	t_roots	(*intersect_fun)(t_vector, t_vector, void*, t_pixel_cal *);
-
-typedef struct	s_fun
+struct			s_fun
 {
-	intersect_fun	inter_f[DIFFERENT_OBJ];
-}				t_fun;
+	t_intersect_fun	inter_f[DIFFERENT_OBJ];
+};
 
-typedef struct	s_user_contact
+struct			s_user_contact
 {
 	int			change;
 	t_vector	click;
 	int			rotation;
 	SDL_Event	ev;
-}				t_user_contact;
+};
 
-
-struct	s_rt
+struct			s_rt
 {
-	t_sdl	sdl;
-	t_scene	scene;
-	t_pov	pov;
-	t_fun	fun;
-	int		editing;
+	t_sdl			sdl;
+	t_scene			scene;
+	t_pov			pov;
+	t_fun			fun;
+	int				editing;
 	t_user_contact	uc;
 };
 
-//function
-double		str_to_double(char *line);
-int			get_coord_value(char *line, t_vector *vec);
-int			read_hex(char *line);
-t_vector	trim_color(t_vector color);
+double			str_to_double(char *line);
+int				get_coord_value(char *line, t_vector *vec);
+int				read_hex(char *line);
+t_vector		trim_color(t_vector color);
 
-//math
-double		dot_prod(t_vector v1, t_vector v2);
-double		vect_len(t_vector a);
-t_vector	multi_vect(t_vector a, double multi);
-t_vector	ft_rotate_camera(t_vector direction, t_pov *pov);
-int			make_unit_vector(t_vector *v);
+double			dot_prod(t_vector v1, t_vector v2);
+double			vect_len(t_vector a);
+t_vector		multi_vect(t_vector a, double multi);
+t_vector		ft_rotate_camera(t_vector direction, t_pov *pov);
+int				make_unit_vector(t_vector *v);
 
-//sphere roots
-t_roots		sphere_roots(t_vector view_point, t_vector view_port, \
+t_roots			sphere_roots(t_vector view_point, t_vector view_port, \
 												void *data, t_pixel_cal *pc);
-void		sphere_cal(t_pixel_cal *pc, t_sphere_data *data);
-t_roots		plane_roots(t_vector view_point, t_vector view_port, \
+void			sphere_cal(t_pixel_cal *pc, t_sphere_data *data);
+t_roots			plane_roots(t_vector view_point, t_vector view_port, \
 												void *data, t_pixel_cal *pc);
-void		plane_cal(t_pixel_cal *pc, t_plane_data *data);
-t_roots		cone_roots(t_vector view_point, t_vector view_port, \
+void			plane_cal(t_pixel_cal *pc, t_plane_data *data);
+t_roots			cone_roots(t_vector view_point, t_vector view_port, \
 												void *data, t_pixel_cal *pc);
-void		cone_cal(t_pixel_cal *pc, t_cone_data *data);
-t_roots		cylin_roots(t_vector view_point, t_vector view_port, \
+void			cone_cal(t_pixel_cal *pc, t_cone_data *data);
+t_roots			cylin_roots(t_vector view_point, t_vector view_port, \
 												void *data, t_pixel_cal *pc);
-void		cylin_cal(t_pixel_cal *pc, t_cylin_data	*cylin);
+void			cylin_cal(t_pixel_cal *pc, t_cylin_data	*cylin);
 
-//output
-int			put_usage(void);
-int			error_message(char *msg);
-void		print_scene_data(t_scene *sc);
+int				put_usage(void);
+int				error_message(char *msg);
+void			print_scene_data(t_scene *sc);
 
-//parser
-int			read_scene(char *file, t_rt *rt);
-int			read_sphere_data(int fd, t_sphere_data	*data);
-int			read_plane_data(int fd, t_plane_data *data);
-int			read_pov_data(int fd, t_pov *pov);
-int			read_light_data(int fd, t_light *light);
-int			read_cylin_data(int fd, t_cylin_data *data);
-int			read_cone_data(int fd, t_cone_data *data);
+int				read_scene(char *file, t_rt *rt);
+int				read_sphere_data(int fd, t_sphere_data	*data);
+int				read_plane_data(int fd, t_plane_data *data);
+int				read_pov_data(int fd, t_pov *pov);
+int				read_light_data(int fd, t_light *light);
+int				read_cylin_data(int fd, t_cylin_data *data);
+int				read_cone_data(int fd, t_cone_data *data);
 
-int			check_line_for_char(int fd, char c);
-int			check_line_for_coord(int fd, t_vector *coord, char *data_mark);
-int			check_line_for_value(int fd, double *value, char *value_mark);
-int			check_line_for_int_value(int fd, int *value, char *value_mark);
-int			check_line_for_color(int fd, Uint32 *color);
-int			check_line_for_string(int fd, char **str, char *str_mark);
+int				check_line_for_char(int fd, char c);
+int				check_line_for_coord(int fd, t_vector *coord, char *data_mark);
+int				check_line_for_value(int fd, double *value, char *value_mark);
+int				check_line_for_int_value(int fd, int *value, char *value_mark);
+int				check_line_for_color(int fd, Uint32 *color);
+int				check_line_for_string(int fd, char **str, char *str_mark);
 
-int			sphere_routine(int fd, t_rt *rt);
-int			plane_routine(int fd, t_rt *rt);
-int			light_routine(int fd, t_rt *rt);
-int			cylin_routine(int fd, t_rt *rt);
-int			cone_routine(int fd, t_rt *rt);
+int				sphere_routine(int fd, t_rt *rt);
+int				plane_routine(int fd, t_rt *rt);
+int				light_routine(int fd, t_rt *rt);
+int				cylin_routine(int fd, t_rt *rt);
+int				cone_routine(int fd, t_rt *rt);
 
-//init
-int			sdl_init(t_sdl *sdl);
-int			config_intersect_function(t_rt *rt);
+int				sdl_init(t_sdl *sdl);
+int				config_intersect_function(t_rt *rt);
 
-//render
-void		put_pixel(int x, int y, Uint32 color, SDL_Surface *surr);
-Uint32		get_pixel(int x, int y, SDL_Surface *surr);
-t_vector	canvas_to_viewport(int x, int y);
+void			put_pixel(int x, int y, Uint32 color, SDL_Surface *surr);
+Uint32			get_pixel(int x, int y, SDL_Surface *surr);
+t_vector		canvas_to_viewport(int x, int y);
 
-void		start_render(t_rt *rt);
-double		calculate_lighting(t_pixel_cal *pc, t_rt *rt);
+void			start_render(t_rt *rt);
+double			calculate_lighting(t_pixel_cal *pc, t_rt *rt);
 
-//user events
-int			user_commands(t_rt *rt);
-int			there_will_be_loop(t_rt *rt);
+int				user_commands(t_rt *rt);
+int				there_will_be_loop(t_rt *rt);
 
-//editor
-int			change_scene(t_rt *rt);
-int			change_light(t_light *light, int key);
-int			change_obj(t_fig *fig, int key);
-int			change_sphere(t_sphere_data *sphere, int key, const Uint8 *keystate);
-int			change_plane(t_plane_data *plane, int key, const Uint8 *keystate);
-int			change_cylin(t_cylin_data *cylin, int key, const Uint8 *keystate);
-int			change_cone(t_cone_data *cone, int key, const Uint8 *keystate);
-void		check_closest_inter(t_rt *rt, t_pixel_cal *pc);
-int			change_color_and_specular(t_vector *color, int *specular, int key, const Uint8 *keystate);
+int				change_scene(t_rt *rt);
+int				change_light(t_light *light, int key);
+int				change_obj(t_fig *fig, int key);
+int				change_sphere(t_sphere_data \
+				*sphere, int key, const Uint8 *keystate);
+int				change_plane(t_plane_data *plane, \
+				int key, const Uint8 *keystate);
+int				change_cylin(t_cylin_data *cylin, \
+				int key, const Uint8 *keystate);
+int				change_cone(t_cone_data *cone, int key, const Uint8 *keystate);
+void			check_closest_inter(t_rt *rt, t_pixel_cal *pc);
+int				change_color_and_specular(t_vector \
+			*color, int *specular, int key, const Uint8 *keystate);
 
 #endif

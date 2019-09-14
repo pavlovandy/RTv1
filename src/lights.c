@@ -3,35 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   lights.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apavlov <apavlov@student.unit.ua>          +#+  +:+       +#+        */
+/*   By: apavlov <apavlov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/09 18:23:45 by apavlov           #+#    #+#             */
-/*   Updated: 2019/08/09 18:23:46 by apavlov          ###   ########.fr       */
+/*   Updated: 2019/09/14 13:07:17 by apavlov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rt.h"
 
-int		check_shadow_inter(t_pixel_cal *pc, t_rt *rt, double min, double max)
+int		check_shadow_inter(t_pixel_cal *pc, t_rt *rt, double mini, double maxi)
 {
 	int		obj_iter;
 	double	closest_dist;
 	int		closest_obj;
 	t_roots	roots;
 
-	closest_dist = max;
+	closest_dist = maxi;
 	closest_obj = -1;
 	obj_iter = -1;
 	while (++obj_iter < rt->scene.count_obj)
 	{
 		roots = rt->fun.inter_f[rt->scene.obj[obj_iter].fig_type](\
 		pc->intersect_point, pc->light_dir, rt->scene.obj[obj_iter].data, pc);
-		if (roots.t1 < closest_dist && roots.t1 > min)
+		if (roots.t1 < closest_dist && roots.t1 > mini)
 		{
 			closest_dist = roots.t1;
 			closest_obj = obj_iter;
 		}
-		if (roots.t2 < closest_dist && roots.t2 > min)
+		if (roots.t2 < closest_dist && roots.t2 > mini)
 		{
 			closest_dist = roots.t2;
 			closest_obj = obj_iter;
@@ -76,8 +76,8 @@ double	calculate_lighting(t_pixel_cal *pc, t_rt *rt)
 				pc->light_dir = light->v - pc->intersect_point;
 			else
 				pc->light_dir = light->v;
-			t_max = (light->type_num == POINT) ? 1 : BIG_VALUE;
-			if (check_shadow_inter(pc, rt, 0.0000000001, t_max) != -1)
+			t_max = (light->type_num == POINT) ? 1 - 10e-10 : BIG_VALUE - 1;
+			if (check_shadow_inter(pc, rt, 10e-10, t_max) != -1)
 				continue ;
 			calculate_light_2(pc, light);
 		}

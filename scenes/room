@@ -42,7 +42,28 @@ plane
 }
 sphere
 {
-	cent : {0, 5, 0}
+	cent : {6, 6, 3}
+	radius : {1}
+	color : {255, 0, 0}
+	specular : {300}
+}
+sphere
+{
+	cent : {9, 6, 6}
+	radius : {1}
+	color : {255, 0, 0}
+	specular : {300}
+}
+sphere
+{
+	cent : {6, 6, 6}
+	radius : {1}
+	color : {255, 0, 0}
+	specular : {300}
+}
+sphere
+{
+	cent : {3, 3, 3}
 	radius : {1}
 	color : {255, 0, 0}
 	specular : {300}
